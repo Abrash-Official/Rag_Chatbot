@@ -1,3 +1,8 @@
+# Keys
 .env
 
+# Virtual Environment
 venv/
+
+# Data you want to ingest
+data/
