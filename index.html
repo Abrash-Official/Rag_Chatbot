@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Chatbot</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Light Theme Palette */
+            --bg-body: #f8fafc;       /* Light Gray Background */
+            --bg-card: #ffffff;       /* White Card */
+            --text-main: #1e293b;     /* Dark Slate Text */
+            --text-muted: #64748b;    /* Muted Text */
+            
+            --primary: #2563eb;       /* Blue */
+            --secondary: #475569;     /* Slate */
+            --accent-purple: #7c3aed; /* LangChain */
+            --accent-green: #059669;  /* Chroma */
+            --accent-orange: #ea580c; /* Groq */
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+
+            --font-main: 'Inter', sans-serif;
+            --font-head: 'Space Grotesk', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        /* --- SLIDE CONTAINER --- */
+        .slide-deck {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px 15% 100px 15%; /* Padding for footer space */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s;
+            overflow-y: auto; /* ENABLE SCROLLING */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--bg-body);
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 1;
+        }
+
+        /* Scrollbar Styling */
+        .slide::-webkit-scrollbar { width: 10px; }
+        .slide::-webkit-scrollbar-track { background: transparent; }
+        .slide::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; }
+        .slide::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* --- TYPOGRAPHY --- */
+        h1 { 
+            font-family: var(--font-head);
+            font-size: 64px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            color: var(--text-main);
+            text-align: center;
+        }
+        
+        h2 { 
+            font-family: var(--font-head);
+            font-size: 42px; 
+            margin-bottom: 30px; 
+            color: var(--primary); 
+            text-align: center;
+        }
+
+        h3 { font-size: 24px; margin-bottom: 10px; font-weight: 600; color: var(--text-main); }
+        
+        p { 
+            font-size: 18px; 
+            line-height: 1.6; 
+            color: var(--secondary); 
+            margin-bottom: 20px; 
+            max-width: 800px;
+        }
+
+        /* --- VERTICAL ARCHITECTURE DIAGRAM --- */
+        .arch-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+        }
+
+        .arch-node {
+            background: var(--bg-card);
+            padding: 15px 30px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            font-weight: 600;
+            width: 280px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .arch-arrow {
+            color: var(--text-muted);
+            font-size: 20px;
+            height: 20px; /* Spacing */
+        }
+
+        .phase-box {
+            border: 2px dashed #cbd5e1;
+            background: rgba(255,255,255,0.5);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            gap: 15px;
+        }
+
+        .phase-label {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--bg-body);
+            padding: 0 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Specific Node Colors */
+        .node-user { background: #eff6ff; border-color: var(--primary); color: var(--primary); }
+        .node-langchain { border-left: 5px solid var(--accent-purple); }
+        .node-chroma { border-left: 5px solid var(--accent-green); }
+        .node-groq { border-left: 5px solid var(--accent-orange); }
+        .node-fastapi { border-left: 5px solid var(--primary); }
+        .node-final { background: #ecfdf5; border-color: var(--accent-green); color: var(--accent-green); }
+
+        /* --- CODE BOX --- */
+        .code-box {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* --- FOOTER NAV --- */
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(255,255,255,0.9);
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Secondary Nav Button Style for Architecture */
+        .nav-btn.secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .nav-btn.secondary:hover {
+            background: #eff6ff;
+            color: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:hover { background: #1d4ed8; transform: translateY(-2px); }
+        .nav-btn:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; }
+        
+        .nav-text {
+            font-weight: 600;
+            color: var(--secondary);
+            font-family: var(--font-head);
+            font-size: 18px;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .center-nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        /* --- MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        
+        .modal-overlay.open {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--bg-body);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            border-radius: 20px;
+            padding: 40px;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            position: relative;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Close helper text */
+        .close-hint {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- MODAL (Architecture Popup) -->
+    <div id="archModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="close-hint">Click outside to close</div>
+            <h2 style="font-size: 28px;">Architecture Reference</h2>
+            <!-- Cloned Architecture Content -->
+            <div class="arch-container" style="padding-bottom: 0;">
+                <div class="arch-node node-user"><i class="fa-solid fa-user"></i> User</div>
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                <div class="arch-node node-fastapi"><i class="fa-brands fa-python"></i> FastAPI Gateway<br><small style="color:var(--text-muted)">Upload Data (.pdf/.txt)</small></div>
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                <div class="phase-box">
+                    <div class="phase-label">Phase 1: Ingest Layer</div>
+                    <div class="arch-node node-langchain"><i class="fa-solid fa-scissors"></i> LangChain<br><small style="color:var(--text-muted)">Split & Process File</small></div>
+                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                    <div class="arch-node node-chroma"><i class="fa-solid fa-database"></i> Chroma DB<br><small style="color:var(--text-muted)">Store Vector Data</small></div>
+                </div>
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                <div class="phase-box">
+                    <div class="phase-label">Phase 2: Query Layer</div>
+                    <div class="arch-node node-fastapi"><i class="fa-brands fa-python"></i> FastAPI Gateway<br><small style="color:var(--text-muted)">Receive Query</small></div>
+                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                    <div class="arch-node node-groq"><i class="fa-solid fa-wand-magic-sparkles"></i> Groq API<br><small style="color:var(--text-muted)">Refine Prompt</small></div>
+                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                    <div class="arch-node node-chroma"><i class="fa-solid fa-magnifying-glass"></i> Chroma DB<br><small style="color:var(--text-muted)">Retrieve Top Chunks</small></div>
+                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                    <div class="arch-node node-groq"><i class="fa-solid fa-pen-nib"></i> Groq API<br><small style="color:var(--text-muted)">Generate Answer</small></div>
+                </div>
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                <div class="arch-node node-final"><i class="fa-solid fa-check-circle"></i> Final Answer</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-deck">
+
+        <!-- SLIDE 1: Title -->
+        <div class="slide active" style="justify-content: center;">
+            <div style="width: 100px; height: 100px; background: #eff6ff; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; box-shadow: var(--shadow-lg);">
+                <i class="fa-solid fa-robot" style="font-size: 40px; color: var(--primary);"></i>
+            </div>
+            <h1>RAG Chatbot</h1>
+            <p style="font-size: 22px; color: var(--primary);">Retrieval-Augmented Generation System</p>
+            <div style="margin-top: 40px; padding: 10px 20px; background: white; border-radius: 50px; border: 1px solid #e2e8f0; color: var(--text-muted);">
+                <i class="fa-solid fa-code"></i> Based on <code>standalone.py</code>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: Vertical Architecture -->
+        <div class="slide">
+            <h2>System Architecture</h2>
+            <div class="arch-container">
+                
+                <!-- START -->
+                <div class="arch-node node-user">
+                    <i class="fa-solid fa-user"></i> User
+                </div>
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                <!-- FASTAPI UPLOAD (Between User & Phase 1) -->
+                <div class="arch-node node-fastapi">
+                    <i class="fa-brands fa-python"></i> FastAPI Gateway<br>
+                    <small style="color:var(--text-muted)">Upload Data (.pdf/.txt)</small>
+                </div>
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                <!-- PHASE 1 -->
+                <div class="phase-box">
+                    <div class="phase-label">Phase 1: Ingest Layer</div>
+                    
+                    <div class="arch-node node-langchain">
+                        <i class="fa-solid fa-scissors"></i> LangChain<br>
+                        <small style="color:var(--text-muted)">Split & Process File</small>
+                    </div>
+                    
+                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                    
+                    <div class="arch-node node-chroma">
+                        <i class="fa-solid fa-database"></i> Chroma DB<br>
+                        <small style="color:var(--text-muted)">Store Vector Data</small>
+                    </div>
+                </div>
+
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                <!-- PHASE 2 -->
+                <div class="phase-box">
+                    <div class="phase-label">Phase 2: Query Layer</div>
+
+                    <div class="arch-node node-fastapi">
+                        <i class="fa-brands fa-python"></i> FastAPI Gateway<br>
+                        <small style="color:var(--text-muted)">Receive Query</small>
+                    </div>
+                    
+                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                    <div class="arch-node node-groq">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Groq API<br>
+                        <small style="color:var(--text-muted)">Refine Prompt</small>
+                    </div>
+
+                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                    <div class="arch-node node-chroma">
+                        <i class="fa-solid fa-magnifying-glass"></i> Chroma DB<br>
+                        <small style="color:var(--text-muted)">Retrieve Top Chunks</small>
+                    </div>
+
+                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                    <div class="arch-node node-groq">
+                        <i class="fa-solid fa-pen-nib"></i> Groq API<br>
+                        <small style="color:var(--text-muted)">Generate Answer</small>
+                    </div>
+                </div>
+
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                <!-- END -->
+                <div class="arch-node node-final">
+                    <i class="fa-solid fa-check-circle"></i> Final Answer
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SLIDE 3: What is RAG? -->
+        <div class="slide" style="justify-content: center;">
+            <h2>What is a RAG Chatbot?</h2>
+            <p style="font-size: 24px; text-align: center;">
+                <strong>R</strong>etrieval <strong>A</strong>ugmented <strong>G</strong>eneration
+            </p>
+            <div style="background: white; padding: 40px; border-radius: 16px; border: 1px solid #e2e8f0; margin-top: 30px; max-width: 700px; box-shadow: var(--shadow-lg);">
+                <p>
+                    A standard AI (like ChatGPT) relies on its <strong>Training Memory</strong>. <br><br>
+                    A RAG Chatbot relies on <strong>YOUR Data</strong>. It looks up information in a specific database (like a textbook or company manual) before answering.
+                </p>
+            </div>
+            <p style="margin-top: 30px;">Think of it like an <strong>Open Book Exam</strong> vs. a Closed Book Exam.</p>
+        </div>
+
+        <!-- SLIDE 4: Why do we need it? -->
+        <div class="slide">
+            <h2>Why do we need RAG?</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%; max-width: 900px; margin-top: 20px;">
+                
+                <div style="background: white; padding: 30px; border-radius: 12px; border-left: 5px solid var(--primary); box-shadow: var(--shadow-sm);">
+                    <i class="fa-solid fa-user-shield" style="font-size: 30px; color: var(--primary); margin-bottom: 15px;"></i>
+                    <h3>Private Data</h3>
+                    <p>Standard AIs don't know your private emails or company PDFs. RAG allows you to chat with your own private files safely.</p>
+                </div>
+
+                <div class="background: white; padding: 30px; border-radius: 12px; border-left: 5px solid #ef4444; box-shadow: var(--shadow-sm); background: white;">
+                    <i class="fa-solid fa-check-double" style="font-size: 30px; color: #ef4444; margin-bottom: 15px;"></i>
+                    <h3>Accuracy</h3>
+                    <p>AI often "hallucinates" (lies). By forcing it to read from a document first, RAG drastically reduces fake answers.</p>
+                </div>
+
+                <div style="background: white; padding: 30px; border-radius: 12px; border-left: 5px solid var(--accent-green); box-shadow: var(--shadow-sm);">
+                    <i class="fa-solid fa-arrows-rotate" style="font-size: 30px; color: var(--accent-green); margin-bottom: 15px;"></i>
+                    <h3>Up-to-Date</h3>
+                    <p>Retraining AI models takes months. With RAG, you just upload a new PDF, and the bot knows the new info instantly.</p>
+                </div>
+
+                <div style="background: white; padding: 30px; border-radius: 12px; border-left: 5px solid var(--accent-orange); box-shadow: var(--shadow-sm);">
+                    <i class="fa-solid fa-tag" style="font-size: 30px; color: var(--accent-orange); margin-bottom: 15px;"></i>
+                    <h3>Cost Effective</h3>
+                    <p>It is much cheaper to run a RAG system than to fine-tune a massive custom model.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SLIDE 5: The Prompts -->
+        <div class="slide">
+            <h2>Controlling the AI (The Prompts)</h2>
+            <p>We use specific instructions in the code to control how the AI behaves. Here are the 4 main prompts used in <code>standalone.py</code>.</p>
+
+            <h3 style="margin-top: 30px; color: var(--primary);">1. System Prompt (The Persona)</h3>
+            <div class="code-box">SYSTEM_PROMPT = (
+    "You are a precise, pragmatic assistant. You refine user queries to maximize retrieval quality, maintain factual grounding..."
+)</div>
+            <p style="font-size: 16px;"><strong>Meaning:</strong> This sets the personality. We tell it to be "precise" and "pragmatic" so it doesn't act silly.</p>
+
+            <h3 style="margin-top: 20px; color: var(--primary);">2. Developer Prompt (The Rules)</h3>
+            <div class="code-box">DEVELOPER_PROMPT = (
+    "First, refine the user’s raw query... Then answer using only the retrieved chunks. Prefer technical clarity..."
+)</div>
+            <p style="font-size: 16px;"><strong>Meaning:</strong> This gives strict rules. "Use only retrieved chunks" ensures it doesn't make things up.</p>
+
+            <h3 style="margin-top: 20px; color: var(--primary);">3. Refine Template (The Optimizer)</h3>
+            <div class="code-box">REFINE_TEMPLATE = (
+    "Refine the following query to maximize retrieval quality from a technical corpus...\nRaw Query:\n{query}"
+)</div>
+            <p style="font-size: 16px;"><strong>Meaning:</strong> This asks the AI to rewrite a bad question (e.g., "it broken") into a good search query (e.g., "System error troubleshooting").</p>
+
+            <h3 style="margin-top: 20px; color: var(--primary);">4. Answer Template (The Final Assembly)</h3>
+            <div class="code-box">ANSWER_TEMPLATE = (
+    "User Query: {query}\nRefined Query: {refined}\nContext Chunks:\n{context}\nTask: Provide a direct answer..."
+)</div>
+            <p style="font-size: 16px;"><strong>Meaning:</strong> This pastes the user's question AND the data found in the database together, telling the AI to combine them.</p>
+        </div>
+
+        <!-- SLIDE 6: LangChain -->
+        <div class="slide">
+            <div style="width: 80px; height: 80px; background: #f3e8ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+                <i class="fa-solid fa-link" style="font-size: 40px; color: var(--accent-purple);"></i>
+            </div>
+            <h2>LangChain</h2>
+            
+            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>What is it?</h3>
+                    <p>LangChain is the "Glue" framework. It connects different parts of an AI application (like the File Reader, the Database, and the AI Model) together.</p>
+                </div>
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>How code uses it?</h3>
+                    <p>We use it for <strong>Splitting Text</strong>. A whole PDF is too big for AI. LangChain chops it into small pieces (Chunks).</p>
+                    <div class="code-box" style="border-left-color: var(--accent-purple);"># Code Example
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,
+    chunk_overlap=150
+)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Chroma DB -->
+        <div class="slide">
+             <div style="width: 80px; height: 80px; background: #ecfdf5; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+                <i class="fa-solid fa-database" style="font-size: 40px; color: var(--accent-green);"></i>
+            </div>
+            <h2>Chroma DB</h2>
+            
+            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>What is it?</h3>
+                    <p>It is a <strong>Vector Database</strong>. Unlike normal databases that store words, Chroma stores "Meanings" (Numbers/Vectors). This allows it to find sentences that <em>mean</em> the same thing, even if they use different words.</p>
+                </div>
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>How code uses it?</h3>
+                    <p>We use it to <strong>Store</strong> the chunks from LangChain and <strong>Retrieve</strong> the top 3 most relevant chunks when you ask a question.</p>
+                    <div class="code-box" style="border-left-color: var(--accent-green);"># Code Example
+vs.similarity_search_with_relevance_scores(
+    query, k=top_k
+)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: FastAPI -->
+        <div class="slide">
+             <div style="width: 80px; height: 80px; background: #eff6ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+                <i class="fa-brands fa-python" style="font-size: 40px; color: var(--primary);"></i>
+            </div>
+            <h2>FastAPI</h2>
+            
+            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>What is it?</h3>
+                    <p>FastAPI is a tool for building websites and APIs. It creates the "Doors" (Endpoints) that allow users to send files or messages to our Python code.</p>
+                </div>
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>How code uses it?</h3>
+                    <p>It defines the <code>/upload</code> door (for PDFs) and the <code>/query</code> door (for questions). It also handles errors.</p>
+                    <div class="code-box" style="border-left-color: var(--primary);"># Code Example
+@app.post("/query")
+async def query_endpoint(payload: QueryRequest):
+    ...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: Groq API -->
+        <div class="slide">
+             <div style="width: 80px; height: 80px; background: #fff7ed; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+                <i class="fa-solid fa-bolt" style="font-size: 40px; color: var(--accent-orange);"></i>
+            </div>
+            <h2>Groq API</h2>
+            
+            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>What is it?</h3>
+                    <p>Groq is the <strong>Engine</strong>. It runs the smart AI model (Llama-3). It is famous for being incredibly fast.</p>
+                </div>
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>How code uses it?</h3>
+                    <p>We use it in two steps: <br>1. To <strong>Refine</strong> your messy question into a good one.<br>2. To <strong>Generate</strong> the final answer using the context.</p>
+                    <div class="code-box" style="border-left-color: var(--accent-orange);"># Code Example
+llm = ChatGroq(model="llama-3.3-70b-versatile")
+resp = llm.invoke(prompt)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: Limitations -->
+        <div class="slide">
+            <h2>Limitations of RAG</h2>
+            <p>Even though RAG is powerful, it is not perfect.</p>
+
+            <div style="display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 800px; margin-top: 30px;">
+                
+                <div style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
+                        <i class="fa-solid fa-trash" style="color: #ef4444;"></i>
+                    </div>
+                    <div>
+                        <h3>Garbage In, Garbage Out</h3>
+                        <p style="margin: 0; font-size: 16px;">If your uploaded PDF is blurry, confusing, or wrong, the AI's answer will also be wrong. It cannot fix bad data.</p>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
+                        <i class="fa-solid fa-hourglass-half" style="color: #ef4444;"></i>
+                    </div>
+                    <div>
+                        <h3>Latency</h3>
+                        <p style="margin: 0; font-size: 16px;">Because it has to Search Database -> Refine -> Generate, it is slower than just asking standard ChatGPT.</p>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
+                        <i class="fa-solid fa-layer-group" style="color: #ef4444;"></i>
+                    </div>
+                    <div>
+                        <h3>Context Limits</h3>
+                        <p style="margin: 0; font-size: 16px;">We can only feed a few chunks (Top 3) to the AI. If the answer requires reading the entire book at once, RAG might miss it.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SLIDE 11: Thank You -->
+        <div class="slide" style="justify-content: center;">
+            <div style="width: 120px; height: 120px; background: #ecfdf5; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; box-shadow: var(--shadow-lg);">
+                <i class="fa-solid fa-hands-clapping" style="font-size: 50px; color: var(--accent-green);"></i>
+            </div>
+            <h1>Thank You!</h1>
+            <p style="font-size: 26px; color: var(--secondary);">Any Questions?</p>
+            <div style="margin-top: 50px; border-top: 1px solid #cbd5e1; padding-top: 30px; text-align: center;">
+                <p style="font-size: 18px; color: var(--text-muted);">Redjet RAG Architecture v1.1.0</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER NAVIGATION -->
+    <div class="footer-nav">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">
+            <i class="fa-solid fa-arrow-left"></i> Previous
+        </button>
+        
+        <div class="center-nav">
+            <span class="nav-text" id="slideCounter">1 / 11</span>
+            
+            <!-- NEW ARCHITECTURE BUTTON -->
+            <button class="nav-btn secondary" id="archBtn">
+                <i class="fa-solid fa-sitemap"></i> Architecture
+            </button>
+        </div>
+
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">
+            Next <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slideCounter');
+        
+        // Modal Elements
+        const archBtn = document.getElementById('archBtn');
+        const archModal = document.getElementById('archModal');
+
+        function updateUI() {
+            slides.forEach(s => s.classList.remove('active'));
+            slides[currentSlide].classList.add('active');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            
+            // Update the counter text
+            slideCounter.textContent = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        function changeSlide(direction) {
+            const newIndex = currentSlide + direction;
+            if (newIndex >= 0 && newIndex < slides.length) {
+                currentSlide = newIndex;
+                updateUI();
+            }
+        }
+
+        // Initialize
+        updateUI();
+
+        // Keyboard Support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'Escape') archModal.classList.remove('open');
+        });
+
+        // MODAL LOGIC
+        archBtn.addEventListener('click', () => {
+            archModal.classList.add('open');
+        });
+
+        // Close when clicking outside the modal content
+        archModal.addEventListener('click', (e) => {
+            if (e.target === archModal) {
+                archModal.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>

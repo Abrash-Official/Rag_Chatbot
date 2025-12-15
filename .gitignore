@@ -12,3 +12,6 @@ chroma_db/
 
 # Pycache
 __pycache__
+
+# Extra Files
+extra_files/
