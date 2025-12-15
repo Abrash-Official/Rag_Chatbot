@@ -6,3 +6,9 @@ venv/
 
 # Data you want to ingest
 data/
+
+# Cached Chroma DB
+chroma_db/
+
+# Pycache
+__pycache__

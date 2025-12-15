@@ -58,7 +58,7 @@ def upsert_chunks(vs: Chroma, chunks: List):
     ids = [m.get("chunk_id") for m in metadatas]
     logger.info(f"Upserting {len(chunks)} chunks into collection '{CHROMA_COLLECTION}'")
     vs.add_texts(texts=texts, metadatas=metadatas, ids=ids)
-    vs.persist()
+    # vs.persist()
     logger.info("Persisted Chroma collection")
 
 if __name__ == "__main__":
