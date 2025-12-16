@@ -110,6 +110,47 @@
             background: #94a3b8;
         }
 
+        /* IDE Window Scrollbar Styling (Dark Theme) */
+        #code-langchain::-webkit-scrollbar,
+        #code-chroma::-webkit-scrollbar,
+        #code-fastapi::-webkit-scrollbar,
+        #code-groq::-webkit-scrollbar,
+        #simOutput::-webkit-scrollbar,
+        #chromaOutput::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #code-langchain::-webkit-scrollbar-track,
+        #code-chroma::-webkit-scrollbar-track,
+        #code-fastapi::-webkit-scrollbar-track,
+        #code-groq::-webkit-scrollbar-track,
+        #simOutput::-webkit-scrollbar-track,
+        #chromaOutput::-webkit-scrollbar-track {
+            background: #1e1e1e;
+            /* Match IDE background */
+        }
+
+        #code-langchain::-webkit-scrollbar-thumb,
+        #code-chroma::-webkit-scrollbar-thumb,
+        #code-fastapi::-webkit-scrollbar-thumb,
+        #code-groq::-webkit-scrollbar-thumb,
+        #simOutput::-webkit-scrollbar-thumb,
+        #chromaOutput::-webkit-scrollbar-thumb {
+            background: #4B4B4B;
+            /* Darker Slate */
+            border-radius: 4px;
+        }
+
+        #code-langchain::-webkit-scrollbar-thumb:hover,
+        #code-chroma::-webkit-scrollbar-thumb:hover,
+        #code-fastapi::-webkit-scrollbar-thumb:hover,
+        #code-groq::-webkit-scrollbar-thumb:hover,
+        #simOutput::-webkit-scrollbar-thumb:hover,
+        #chromaOutput::-webkit-scrollbar-thumb:hover {
+            background: #6e6e6e;
+            /* Lighter on hover */
+        }
+
         /* --- TYPOGRAPHY --- */
         h1 {
             font-family: var(--font-head);
@@ -635,40 +676,100 @@
         <!-- SLIDE 5: The Prompts -->
         <div class="slide">
             <h2>Controlling the AI (The Prompts)</h2>
-            <p>We use specific instructions in the code to control how the AI behaves. Here are the 4 main prompts used
-                in <code>main.py</code>.</p>
+            <div style="width: 100%; max-width: 900px;">
+                <p style="margin-bottom: 30px; text-align: center;">We use specific instructions in the code to control
+                    how the AI behaves. Here are the 4 main prompts used in <code>main.py</code>.</p>
 
-            <h3 style="margin-top: 30px; color: var(--primary);">1. System Prompt (The Persona)</h3>
-            <div class="code-box">SYSTEM_PROMPT = (
-                "You are a precise, pragmatic assistant. You refine user queries to maximize retrieval quality, maintain
-                factual grounding..."
-                )</div>
-            <p style="font-size: 16px;"><strong>Meaning:</strong> This sets the personality. We tell it to be "precise"
-                and "pragmatic" so it doesn't act silly.</p>
+                <!-- Prompt 1 -->
+                <h3 style="margin-top: 30px; color: var(--primary); text-align: left;">1. System Prompt (The Persona)
+                </h3>
+                <div
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 10px; border: 1px solid #333;">
+                    <div
+                        style="background: #252526; padding: 8px 15px; display: flex; align-items: center; border-bottom: 1px solid #333; gap: 8px;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                    </div>
+                    <div
+                        style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5;">
+                        <span style="color: #9cdcfe;">SYSTEM_PROMPT</span> = (<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ce9178;">"You are a precise, pragmatic assistant.
+                            You refine user queries to maximize retrieval quality, maintain factual
+                            grounding..."</span><br>
+                        )
+                    </div>
+                </div>
+                <p style="font-size: 16px; margin-bottom: 30px;"><strong>Meaning:</strong> This sets the personality. We
+                    tell it to be "precise" and "pragmatic" so it doesn't act silly.</p>
 
-            <h3 style="margin-top: 20px; color: var(--primary);">2. Developer Prompt (The Rules)</h3>
-            <div class="code-box">DEVELOPER_PROMPT = (
-                "First, refine the user’s raw query... Then answer using only the retrieved chunks. Prefer technical
-                clarity..."
-                )</div>
-            <p style="font-size: 16px;"><strong>Meaning:</strong> This gives strict rules. "Use only retrieved chunks"
-                ensures it doesn't make things up.</p>
+                <!-- Prompt 2 -->
+                <h3 style="margin-top: 20px; color: var(--primary); text-align: left;">2. Developer Prompt (The Rules)
+                </h3>
+                <div
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 10px; border: 1px solid #333;">
+                    <div
+                        style="background: #252526; padding: 8px 15px; display: flex; align-items: center; border-bottom: 1px solid #333; gap: 8px;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                    </div>
+                    <div
+                        style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5;">
+                        <span style="color: #9cdcfe;">DEVELOPER_PROMPT</span> = (<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ce9178;">"First, refine the user’s raw query...
+                            Then answer using only the retrieved chunks. Prefer technical clarity..."</span><br>
+                        )
+                    </div>
+                </div>
+                <p style="font-size: 16px; margin-bottom: 30px;"><strong>Meaning:</strong> This gives strict rules. "Use
+                    only retrieved chunks" ensures it doesn't make things up.</p>
 
-            <h3 style="margin-top: 20px; color: var(--primary);">3. Refine Template (The Optimizer)</h3>
-            <div class="code-box">REFINE_TEMPLATE = (
-                "Refine the following query to maximize retrieval quality from a technical corpus...\nRaw
-                Query:\n{query}"
-                )</div>
-            <p style="font-size: 16px;"><strong>Meaning:</strong> This asks the AI to rewrite a bad question (e.g., "it
-                broken") into a good search query (e.g., "System error troubleshooting").</p>
+                <!-- Prompt 3 -->
+                <h3 style="margin-top: 20px; color: var(--primary); text-align: left;">3. Refine Template (The
+                    Optimizer)</h3>
+                <div
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 10px; border: 1px solid #333;">
+                    <div
+                        style="background: #252526; padding: 8px 15px; display: flex; align-items: center; border-bottom: 1px solid #333; gap: 8px;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                    </div>
+                    <div
+                        style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5;">
+                        <span style="color: #9cdcfe;">REFINE_TEMPLATE</span> = (<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ce9178;">"Refine the following query to maximize
+                            retrieval quality from a technical corpus...\nRaw Query:\n{query}"</span><br>
+                        )
+                    </div>
+                </div>
+                <p style="font-size: 16px; margin-bottom: 30px;"><strong>Meaning:</strong> This asks the AI to rewrite a
+                    bad question (e.g., "it broken") into a good search query (e.g., "System error troubleshooting").
+                </p>
 
-            <h3 style="margin-top: 20px; color: var(--primary);">4. Answer Template (The Final Assembly)</h3>
-            <div class="code-box">ANSWER_TEMPLATE = (
-                "User Query: {query}\nRefined Query: {refined}\nContext Chunks:\n{context}\nTask: Provide a direct
-                answer..."
-                )</div>
-            <p style="font-size: 16px;"><strong>Meaning:</strong> This pastes the user's question AND the data found in
-                the database together, telling the AI to combine them.</p>
+                <!-- Prompt 4 -->
+                <h3 style="margin-top: 20px; color: var(--primary); text-align: left;">4. Answer Template (The Final
+                    Assembly)</h3>
+                <div
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 10px; border: 1px solid #333;">
+                    <div
+                        style="background: #252526; padding: 8px 15px; display: flex; align-items: center; border-bottom: 1px solid #333; gap: 8px;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                    </div>
+                    <div
+                        style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5;">
+                        <span style="color: #9cdcfe;">ANSWER_TEMPLATE</span> = (<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ce9178;">"User Query: {query}\nRefined Query:
+                            {refined}\nContext Chunks:\n{context}\nTask: Provide a direct answer..."</span><br>
+                        )
+                    </div>
+                </div>
+                <p style="font-size: 16px; margin-bottom: 30px;"><strong>Meaning:</strong> This pastes the user's
+                    question AND the data found in the database together, telling the AI to combine them.</p>
+            </div>
         </div>
 
         <!-- SLIDE 6: LangChain (Simulated IDE) -->
@@ -712,13 +813,20 @@
                                 <span
                                     style="font-family: monospace; color: #ccccc7; font-size: 13px;">langchain_demo.py</span>
                             </div>
-                            <button onclick="runSimulatedDemo()"
-                                style="background: #27c93f; border: none; border-radius: 4px; color: black; padding: 4px 12px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                                <i class="fa-solid fa-play"></i> Run
-                            </button>
+                            <div style="display: flex; gap: 10px;">
+                                <button onclick="copyCode('code-langchain', this)"
+                                    style="background: transparent; border: 1px solid #4B4B4B; border-radius: 4px; color: #ccccc7; padding: 4px 8px; font-size: 12px; cursor: pointer; transition: all 0.2s;"
+                                    title="Copy Code">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                                <button onclick="runSimulatedDemo()"
+                                    style="background: #27c93f; border: none; border-radius: 4px; color: black; padding: 4px 12px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                                    <i class="fa-solid fa-play"></i> Run
+                                </button>
+                            </div>
                         </div>
                         <!-- Code Content -->
-                        <div
+                        <div id="code-langchain"
                             style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
                             <span style="color: #c586c0;">import</span> os<br>
                             <span style="color: #c586c0;">from</span> langchain_community.document_loaders <span
@@ -729,6 +837,7 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(<span
                                 style="color: #ce9178;">"--- LangChain Educational Demo: Loader & Splitter
                                 ---"</span>)<br>
+                            ---"</span>)<br>
                             &nbsp;&nbsp;&nbsp;&nbsp;file_path = <span style="color: #9cdcfe;">input</span>(<span
                                 style="color: #ce9178;">"Enter the absolute path to your file (PDF or TXT):
                                 "</span>)<br><br>
@@ -954,13 +1063,20 @@
                             <i class="fa-brands fa-python" style="color: #4B8BBE;"></i>
                             <span style="font-family: monospace; color: #ccccc7; font-size: 13px;">chroma_demo.py</span>
                         </div>
-                        <button onclick="runChromaDemo()"
-                            style="background: #27c93f; border: none; border-radius: 4px; color: black; padding: 4px 12px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                            <i class="fa-solid fa-play"></i> Run
-                        </button>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="copyCode('code-chroma', this)"
+                                style="background: transparent; border: 1px solid #4B4B4B; border-radius: 4px; color: #ccccc7; padding: 4px 8px; font-size: 12px; cursor: pointer; transition: all 0.2s;"
+                                title="Copy Code">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                            <button onclick="runChromaDemo()"
+                                style="background: #27c93f; border: none; border-radius: 4px; color: black; padding: 4px 12px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                                <i class="fa-solid fa-play"></i> Run
+                            </button>
+                        </div>
                     </div>
                     <!-- Code Content -->
-                    <div
+                    <div id="code-chroma"
                         style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
                         <span style="color: #c586c0;">from</span> langchain_chroma <span
                             style="color: #c586c0;">import</span> Chroma<br>
@@ -1093,9 +1209,14 @@
                             <span style="font-family: monospace; color: #ccccc7; font-size: 13px;">main.py
                                 (FastAPI)</span>
                         </div>
+                        <button onclick="copyCode('code-fastapi', this)"
+                            style="background: transparent; border: 1px solid #4B4B4B; border-radius: 4px; color: #ccccc7; padding: 4px 8px; font-size: 12px; cursor: pointer; transition: all 0.2s;"
+                            title="Copy Code">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
                     </div>
                     <!-- Code Content -->
-                    <div
+                    <div id="code-fastapi"
                         style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
                         <span style="color: #c586c0;">from</span> fastapi <span style="color: #c586c0;">import</span>
                         FastAPI, UploadFile<br><br>
@@ -1157,12 +1278,18 @@
                             <i class="fa-brands fa-python" style="color: #4B8BBE;"></i>
                             <span style="font-family: monospace; color: #ccccc7; font-size: 13px;">groq_demo.py</span>
                         </div>
+                        <button onclick="copyCode('code-groq', this)"
+                            style="background: transparent; border: 1px solid #4B4B4B; border-radius: 4px; color: #ccccc7; padding: 4px 8px; font-size: 12px; cursor: pointer; transition: all 0.2s;"
+                            title="Copy Code">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
                     </div>
                     <!-- Code Content -->
-                    <div
+                    <div id="code-groq"
                         style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
                         <span style="color: #c586c0;">from</span> langchain_groq <span
                             style="color: #c586c0;">import</span> ChatGroq<br><br>
+                        style="color: #c586c0;">import</span> ChatGroq<br><br>
                         <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">main</span>():<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(<span
                             style="color: #ce9178;">"--- Groq API Educational Demo ---"</span>)<br>
@@ -1189,6 +1316,26 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function copyCode(elementId, btnElement) {
+            // Get the text content from the div
+            const codeDiv = document.getElementById(elementId);
+            // We need to replace <br> with newlines for copying
+            let textToCopy = codeDiv.innerText;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                // Visual feedback
+                const originalIcon = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: #27c93f;"></i>';
+                setTimeout(() => {
+                    btnElement.innerHTML = originalIcon;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+    </script>
 
     <!-- SLIDE 10: Limitations -->
     <div class="slide">
