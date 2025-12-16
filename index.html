@@ -671,170 +671,500 @@
                 the database together, telling the AI to combine them.</p>
         </div>
 
-        <!-- SLIDE 6: LangChain -->
+        <!-- SLIDE 6: LangChain (Simulated IDE) -->
         <div class="slide">
             <div
                 style="width: 80px; height: 80px; background: #f3e8ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
                 <i class="fa-solid fa-link" style="font-size: 40px; color: var(--accent-purple);"></i>
             </div>
-            <h2>LangChain</h2>
+            <h2>LangChain: The Data Splitter</h2>
 
-            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
-                <div style="flex: 1; min-width: 300px;">
-                    <h3>What is it?</h3>
-                    <p>LangChain is the "Glue" framework. It connects different parts of an AI application (like the
-                        File Reader, the Database, and the AI Model) together.</p>
-                </div>
-                <div style="flex: 1; min-width: 300px;">
-                    <h3>How code uses it?</h3>
-                    <p>We use it for <strong>Splitting Text</strong>. A whole PDF is too big for AI. LangChain chops it
-                        into small pieces (Chunks).</p>
-                    <div class="code-box" style="border-left-color: var(--accent-purple);"># Code Example
-                        splitter = RecursiveCharacterTextSplitter(
-                        chunk_size=1000,
-                        chunk_overlap=150
-                        )</div>
-                </div>
-            </div>
-        </div>
+            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px; height: 100%;">
 
-        <!-- SLIDE 7: Chroma DB -->
-        <div class="slide">
-            <div
-                style="width: 80px; height: 80px; background: #ecfdf5; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
-                <i class="fa-solid fa-database" style="font-size: 40px; color: var(--accent-green);"></i>
-            </div>
-            <h2>Chroma DB</h2>
+                <!-- Left: Theory -->
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>What really is LangChain?</h3>
+                    <p>It is the "Glue" framework. But specifically for data, its main function is <strong>Text
+                            Splitting</strong>.</p>
 
-            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
-                <div style="flex: 1; min-width: 300px;">
-                    <h3>What is it?</h3>
-                    <p>It is a <strong>Vector Database</strong>. Unlike normal databases that store words, Chroma stores
-                        "Meanings" (Numbers/Vectors). This allows it to find sentences that <em>mean</em> the same
-                        thing, even if they use different words.</p>
-                </div>
-                <div style="flex: 1; min-width: 300px;">
-                    <h3>How code uses it?</h3>
-                    <p>We use it to <strong>Store</strong> the chunks from LangChain and <strong>Retrieve</strong> the
-                        top 3 most relevant chunks when you ask a question.</p>
-                    <div class="code-box" style="border-left-color: var(--accent-green);"># Code Example
-                        vs.similarity_search_with_relevance_scores(
-                        query, k=top_k
-                        )</div>
-                </div>
-            </div>
-        </div>
+                    <h4 style="margin-top: 15px; color: var(--accent-purple);">Why Split?</h4>
+                    <p style="font-size: 16px;">AI models have a "Context Window" (limited memory). A 100-page PDF is
+                        too big to feed at once. LangChain breaks it into smaller "Chunks" (e.g., 1000 characters).</p>
 
-        <!-- SLIDE 8: FastAPI -->
-        <div class="slide">
-            <div
-                style="width: 80px; height: 80px; background: #eff6ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
-                <i class="fa-brands fa-python" style="font-size: 40px; color: var(--primary);"></i>
-            </div>
-            <h2>FastAPI</h2>
-
-            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
-                <div style="flex: 1; min-width: 300px;">
-                    <h3>What is it?</h3>
-                    <p>FastAPI is a tool for building websites and APIs. It creates the "Doors" (Endpoints) that allow
-                        users to send files or messages to our Python code.</p>
+                    <p style="margin-top: 20px; color: var(--text-muted); font-size: 14px;">
+                        <i class="fa-solid fa-arrow-right"></i> Click the <strong style="color: #27c93f;"><i
+                                class="fa-solid fa-play"></i> Run</strong> button in the simulated code window to see it
+                        in action.
+                    </p>
                 </div>
-                <div style="flex: 1; min-width: 300px;">
-                    <h3>How code uses it?</h3>
-                    <p>It defines the <code>/upload</code> door (for PDFs) and the <code>/query</code> door (for
-                        questions). It also handles errors.</p>
-                    <div class="code-box" style="border-left-color: var(--primary);"># Code Example
-                        @app.post("/query")
-                        async def query_endpoint(payload: QueryRequest):
-                        ...</div>
-                </div>
-            </div>
-        </div>
 
-        <!-- SLIDE 9: Groq API -->
-        <div class="slide">
-            <div
-                style="width: 80px; height: 80px; background: #fff7ed; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
-                <i class="fa-solid fa-bolt" style="font-size: 40px; color: var(--accent-orange);"></i>
-            </div>
-            <h2>Groq API</h2>
+                <!-- Right: Simulated IDE -->
+                <div style="flex: 1.2; min-width: 350px; display: flex; flex-direction: column; gap: 15px;">
 
-            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
-                <div style="flex: 1; min-width: 300px;">
-                    <h3>What is it?</h3>
-                    <p>Groq is the <strong>Engine</strong>. It runs the smart AI model (Llama-3). It is famous for being
-                        incredibly fast.</p>
-                </div>
-                <div style="flex: 1; min-width: 300px;">
-                    <h3>How code uses it?</h3>
-                    <p>We use it in two steps: <br>1. To <strong>Refine</strong> your messy question into a good
-                        one.<br>2. To <strong>Generate</strong> the final answer using the context.</p>
-                    <div class="code-box" style="border-left-color: var(--accent-orange);"># Code Example
-                        llm = ChatGroq(model="llama-3.3-70b-versatile")
-                        resp = llm.invoke(prompt)</div>
+                    <!-- Code Window -->
+                    <div
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 200px; display: flex; flex-direction: column;">
+                        <!-- Header / Toolbar -->
+                        <div
+                            style="background: #252526; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <i class="fa-brands fa-python" style="color: #4B8BBE;"></i>
+                                <span
+                                    style="font-family: monospace; color: #ccccc7; font-size: 13px;">langchain_demo.py</span>
+                            </div>
+                            <button onclick="runSimulatedDemo()"
+                                style="background: #27c93f; border: none; border-radius: 4px; color: black; padding: 4px 12px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                                <i class="fa-solid fa-play"></i> Run
+                            </button>
+                        </div>
+                        <!-- Code Content -->
+                        <div
+                            style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
+                            <span style="color: #c586c0;">import</span> os<br>
+                            <span style="color: #c586c0;">from</span> langchain_community.document_loaders <span
+                                style="color: #c586c0;">import</span> PyPDFLoader<br>
+                            <span style="color: #c586c0;">from</span> langchain_text_splitters <span
+                                style="color: #c586c0;">import</span> RecursiveCharacterTextSplitter<br><br>
+                            <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">main</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(<span
+                                style="color: #ce9178;">"--- LangChain Educational Demo: Loader & Splitter
+                                ---"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;file_path = <span style="color: #9cdcfe;">input</span>(<span
+                                style="color: #ce9178;">"Enter the absolute path to your file (PDF or TXT):
+                                "</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Load Document</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;loader = <span
+                                style="color: #4ec9b0;">PyPDFLoader</span>(file_path)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;docs = loader.load()<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Split Document</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;splitter = <span
+                                style="color: #4ec9b0;">RecursiveCharacterTextSplitter</span>(chunk_size=1000)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;chunks = splitter.split_documents(docs)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(f<span
+                                style="color: #ce9178;">"-> Created {len(chunks)} chunks."</span>)<br>
+                        </div>
+                    </div>
+
+                    <!-- Terminal Window -->
+                    <div class="terminal-window"
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 300px; display: flex; flex-direction: column;">
+                        <!-- Terminal Header -->
+                        <div
+                            style="background: #2d2d2d; padding: 10px 15px; display: flex; gap: 8px; align-items: center;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                            <span
+                                style="margin-left: 10px; font-family: monospace; color: #9ca3af; font-size: 12px;">Terminal</span>
+                        </div>
+
+                        <!-- Terminal Content -->
+                        <div id="simOutput"
+                            style="padding: 15px; color: #f0f0f0; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; line-height: 1.5; overflow-y: auto; flex: 1; white-space: pre-wrap;">
+                            <span style="color: #6b7280;">Ready... Click "Run" code above.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 10: Limitations -->
-        <div class="slide">
-            <h2>Limitations of RAG</h2>
-            <p>Even though RAG is powerful, it is not perfect.</p>
+        <script>
+            function runSimulatedDemo() {
+                const outputDiv = document.getElementById('simOutput');
+                outputDiv.innerHTML = ""; // Clear
 
-            <div
-                style="display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 800px; margin-top: 30px;">
+                const lines = [
+                    { text: "PS D:\\Github Repos\\Rag_Chatbot> python langchain_demo.py", delay: 0 },
+                    { text: "--- LangChain Educational Demo: Loader & Splitter ---", delay: 500, color: "#a5f3fc" },
+                    { text: "Enter the absolute path to your file (PDF or TXT): data\\Request Form Table.pdf", delay: 1000 },
+                    { text: "", delay: 1200 },
+                    { text: "[1] Loading file: Request Form Table.pdf...", delay: 1500, color: "#fcd34d" },
+                    { text: "    -> Successfully loaded 1 page(s)/document(s).", delay: 2500, color: "#86efac" },
+                    { text: "", delay: 2700 },
+                    { text: "[2] Splitting text into chunks...", delay: 3000, color: "#fcd34d" },
+                    { text: "    -> Created 2 chunks.", delay: 4000, color: "#86efac" },
+                    { text: "", delay: 4200 },
+                    { text: "[3] Printing Chunks (Preview first 3):", delay: 4500, color: "#c084fc" },
+                    { text: "============================================================", delay: 4600 },
+                    { text: "CHUNK 1:", delay: 4700, color: "#93c5fd", bold: true },
+                    { text: "Metadata: {'producer': 'LuaTeX-1.22.0', 'creator': 'TeX', 'creationdate': '2025-12-12T18:51:52+00:00', 'moddate': '2025-12-12T18:51:52+00:00', 'trapped': '/False', 'ptex.fullbanner': 'This is LuaHBTeX, Version 1.22.0 (TeX Live 2025)', 'source': 'data\\\\Request Form Table.pdf', 'total_pages': 1, 'page': 0, 'page_label': '1'}", delay: 4800, color: "#9ca3af" },
+                    { text: "Content Length: 970", delay: 4900 },
+                    { text: "--------------------", delay: 5000 },
+                    { text: "Request Form\nField Name Input Type Requirements & Logic\n1. Request Type Dropdown Select Mandatory Field (*)\nUsed to categorize the AI’s domain expertise.\nOptions: Price Strategy, Growth & Marketing, Hir-\ning & Operations, Customer & Revenue, Strategic\nDecisions, Other .\n2. Your Question Text Area Mandatory Field (*)\nValidation: Max 2000 characters.\nPurpose: The primary user query for the AI.\nPlaceholders: “Should I raise prices?”, “Optimal\npricing tier structure?”, “Yearly plan revenue im-\npact?...", delay: 5100 },
+                    { text: "============================================================", delay: 5500 },
+                    { text: "CHUNK 2:", delay: 5600, color: "#93c5fd", bold: true },
+                    { text: "Metadata: {'producer': 'LuaTeX-1.22.0', 'creator': 'TeX', 'creationdate': '2025-12-12T18:51:52+00:00', 'moddate': '2025-12-12T18:51:52+00:00', 'trapped': '/False', 'ptex.fullbanner': 'This is LuaHBTeX, Version 1.22.0 (TeX Live 2025)', 'source': 'data\\\\Request Form Table.pdf', 'total_pages': 1, 'page': 0, 'page_label': '1'}", delay: 5700, color: "#9ca3af" },
+                    { text: "Content Length: 276", delay: 5800 },
+                    { text: "--------------------", delay: 5900 },
+                    { text: "simulations...”\nAI Impact: Triggers a more detailed, simulation-\nbased chain-of-thought in the Agent.\n6. Attach Files File Upload Optional\nFormats: CSV, Spreadsheet, Document.\nAI Impact: Agent must have RAG (Retrieval-\nAugmented Generation) capabilities to read these\nfiles.\n1", delay: 6000 },
+                    { text: "============================================================", delay: 6400 },
+                    { text: "(venv) PS D:\\Github Repos\\Rag_Chatbot> ", delay: 6500 }
+                ];
 
+                let totalDelay = 0;
+
+                lines.forEach(line => {
+                    setTimeout(() => {
+                        const div = document.createElement('div');
+                        div.style.marginBottom = "4px";
+                        if (line.color) div.style.color = line.color;
+                        if (line.bold) div.style.fontWeight = "bold";
+                        div.innerText = line.text;
+                        outputDiv.appendChild(div);
+                        outputDiv.scrollTop = outputDiv.scrollHeight; // Auto scroll
+                    }, line.delay);
+                });
+            }
+        </script>
+        <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px; height: 100%;">
+
+            <!-- Left: Theory -->
+            <div style="flex: 1; min-width: 300px;">
+                <h3>What really is LangChain?</h3>
+                <p>It is the "Glue" framework. But specifically for data, its main function is <strong>Text
+                        Splitting</strong>.</p>
+
+                <h4 style="margin-top: 15px; color: var(--accent-purple);">Why Split?</h4>
+                <p style="font-size: 16px;">AI models have a "Context Window" (limited memory). A 100-page PDF is
+                    too big to feed at once. LangChain breaks it into smaller "Chunks" (e.g., 1000 characters).</p>
+
+                <!-- Simulation Control -->
                 <div
-                    style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
-                    <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
-                        <i class="fa-solid fa-trash" style="color: #ef4444;"></i>
+                    style="margin-top: 30px; padding: 20px; background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: var(--shadow-sm);">
+                    <p style="margin-bottom: 15px; font-weight: bold;">See how it works:</p>
+                    <button class="nav-btn primary" onclick="runSimulatedDemo()"
+                        style="width: 100%; justify-content: center;">
+                        <i class="fa-solid fa-play"></i> Run LangChain Simulation
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right: Simulated Terminal -->
+            <div style="flex: 1.2; min-width: 350px;">
+                <div class="terminal-window"
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); overflow: hidden; height: 400px; display: flex; flex-direction: column;">
+                    <!-- Terminal Header -->
+                    <div style="background: #2d2d2d; padding: 10px 15px; display: flex; gap: 8px; align-items: center;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                        <span style="margin-left: 10px; font-family: monospace; color: #9ca3af; font-size: 12px;">python
+                            langchain_demo.py</span>
                     </div>
-                    <div>
-                        <h3>Garbage In, Garbage Out</h3>
-                        <p style="margin: 0; font-size: 16px;">If your uploaded PDF is blurry, confusing, or wrong, the
-                            AI's answer will also be wrong. It cannot fix bad data.</p>
+
+                    <!-- Terminal Content -->
+                    <div id="simOutput"
+                        style="padding: 15px; color: #f0f0f0; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; line-height: 1.5; overflow-y: auto; flex: 1; white-space: pre-wrap;">
+                        <span style="color: #6b7280;">Click "Run LangChain Simulation" to start...</span>
                     </div>
                 </div>
-
-                <div
-                    style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
-                    <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
-                        <i class="fa-solid fa-hourglass-half" style="color: #ef4444;"></i>
-                    </div>
-                    <div>
-                        <h3>Latency</h3>
-                        <p style="margin: 0; font-size: 16px;">Because it has to Search Database -> Refine -> Generate,
-                            it is slower than just asking standard ChatGPT.</p>
-                    </div>
-                </div>
-
-                <div
-                    style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
-                    <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
-                        <i class="fa-solid fa-layer-group" style="color: #ef4444;"></i>
-                    </div>
-                    <div>
-                        <h3>Context Limits</h3>
-                        <p style="margin: 0; font-size: 16px;">We can only feed a few chunks (Top 3) to the AI. If the
-                            answer requires reading the entire book at once, RAG might miss it.</p>
-                    </div>
-                </div>
-
             </div>
         </div>
+    </div>
 
-        <!-- SLIDE 11: Thank You -->
-        <div class="slide" style="justify-content: center;">
+    <script>
+        function runSimulatedDemo() {
+            const outputDiv = document.getElementById('simOutput');
+            outputDiv.innerHTML = ""; // Clear
+
+            const lines = [
+                { text: "PS D:\\Github Repos\\Rag_Chatbot> python langchain_demo.py", delay: 0 },
+                { text: "--- LangChain Educational Demo: Loader & Splitter ---", delay: 500, color: "#a5f3fc" },
+                { text: "Enter the absolute path to your file (PDF or TXT): data\\Request Form Table.pdf", delay: 1000 },
+                { text: "", delay: 1200 },
+                { text: "[1] Loading file: Request Form Table.pdf...", delay: 1500, color: "#fcd34d" },
+                { text: "    -> Successfully loaded 1 page(s)/document(s).", delay: 2500, color: "#86efac" },
+                { text: "", delay: 2700 },
+                { text: "[2] Splitting text into chunks...", delay: 3000, color: "#fcd34d" },
+                { text: "    -> Created 2 chunks.", delay: 4000, color: "#86efac" },
+                { text: "", delay: 4200 },
+                { text: "[3] Printing Chunks (Preview first 3):", delay: 4500, color: "#c084fc" },
+                { text: "============================================================", delay: 4600 },
+                { text: "CHUNK 1:", delay: 4700, color: "#93c5fd", bold: true },
+                { text: "Metadata: {'producer': 'LuaTeX-1.22.0', ... 'source': 'data\\\\Request Form Table.pdf', 'page': 0}", delay: 4800, color: "#9ca3af" },
+                { text: "Content Length: 970", delay: 4900 },
+                { text: "--------------------", delay: 5000 },
+                { text: "Request Form\nField Name Input Type Requirements & Logic\n1. Request Type Dropdown Select Mandatory Field (*)\nUsed to categorize the AI’s domain expertise.\nOptions: Price Strategy, Growth & Marketing...", delay: 5100 },
+                { text: "============================================================", delay: 5500 },
+                { text: "CHUNK 2:", delay: 5600, color: "#93c5fd", bold: true },
+                { text: "Metadata: {'producer': 'LuaTeX-1.22.0', ... 'source': 'data\\\\Request Form Table.pdf', 'page': 0}", delay: 5700, color: "#9ca3af" },
+                { text: "Content Length: 276", delay: 5800 },
+                { text: "--------------------", delay: 5900 },
+                { text: "simulations...”\nAI Impact: Triggers a more detailed, simulation-\nbased chain-of-thought in the Agent.\n6. Attach Files File Upload Optional...", delay: 6000 },
+                { text: "============================================================", delay: 6400 },
+                { text: "(venv) PS D:\\Github Repos\\Rag_Chatbot> ", delay: 6500 }
+            ];
+
+            let totalDelay = 0;
+
+            lines.forEach(line => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.style.marginBottom = "4px";
+                    if (line.color) div.style.color = line.color;
+                    if (line.bold) div.style.fontWeight = "bold";
+                    div.innerText = line.text;
+                    outputDiv.appendChild(div);
+                    outputDiv.scrollTop = outputDiv.scrollHeight; // Auto scroll
+                }, line.delay);
+            });
+        }
+    </script>
+
+    <!-- SLIDE 7: Chroma DB (Simulated IDE) -->
+    <div class="slide">
+        <div
+            style="width: 80px; height: 80px; background: #ecfdf5; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+            <i class="fa-solid fa-database" style="font-size: 40px; color: var(--accent-green);"></i>
+        </div>
+        <h2>Chroma DB: The Semantic Search</h2>
+
+        <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px; height: 100%;">
+
+            <!-- Left: Theory -->
+            <div style="flex: 1; min-width: 300px;">
+                <h3>What is it?</h3>
+                <p>It is a <strong>Vector Database</strong>. Unlike normal databases that store words, Chroma stores
+                    "Meanings" (Numbers/Vectors).</p>
+                <p style="margin-top: 10px;">This allows it to find sentences that <em>mean</em> the same thing, even if
+                    they use different words (e.g., "Hi" matches "Hello").</p>
+
+                <h4 style="margin-top: 15px; color: var(--accent-green);">How Code uses it?</h4>
+                <p style="font-size: 16px;">We use it to <strong>Store</strong> the chunks from LangChain and
+                    <strong>Retrieve</strong> the most relevant chunks when you ask a question.</p>
+
+                <p style="margin-top: 20px; color: var(--text-muted); font-size: 14px;">
+                    <i class="fa-solid fa-arrow-right"></i> Click the <strong style="color: #27c93f;"><i
+                            class="fa-solid fa-play"></i> Run</strong> button in the simulated code window to see
+                    semantic search in action.
+                </p>
+            </div>
+
+            <!-- Right: Simulated IDE -->
+            <div style="flex: 1.2; min-width: 350px; display: flex; flex-direction: column; gap: 15px;">
+
+                <!-- Code Window -->
+                <div
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 200px; display: flex; flex-direction: column;">
+                    <!-- Header / Toolbar -->
+                    <div
+                        style="background: #252526; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <i class="fa-brands fa-python" style="color: #4B8BBE;"></i>
+                            <span style="font-family: monospace; color: #ccccc7; font-size: 13px;">chroma_demo.py</span>
+                        </div>
+                        <button onclick="runChromaDemo()"
+                            style="background: #27c93f; border: none; border-radius: 4px; color: black; padding: 4px 12px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-play"></i> Run
+                        </button>
+                    </div>
+                    <!-- Code Content -->
+                    <div
+                        style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
+                        <span style="color: #c586c0;">from</span> langchain_chroma <span
+                            style="color: #c586c0;">import</span> Chroma<br>
+                        <span style="color: #c586c0;">from</span> langchain_community.embeddings <span
+                            style="color: #c586c0;">import</span> SentenceTransformerEmbeddings<br><br>
+                        <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">main</span>():<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(<span
+                            style="color: #ce9178;">"--- ChromaDB Educational Demo: Embedding & Search ---"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Initialize Embedding Model</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;embeddings = <span
+                            style="color: #4ec9b0;">SentenceTransformerEmbeddings</span>(model_name=<span
+                            style="color: #ce9178;">"all-MiniLM-L6-v2"</span>)<br><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Create Vector DB</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;vectorstore = <span
+                            style="color: #4ec9b0;">Chroma</span>(collection_name=<span
+                            style="color: #ce9178;">"demo"</span>, embedding_function=embeddings)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;vectorstore.add_documents(docs)<br><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Function: Similarity Search</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;results = vectorstore.similarity_search_with_score(query, k=2)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(results)<br>
+                    </div>
+                </div>
+
+                <!-- Terminal Window -->
+                <div class="terminal-window"
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 300px; display: flex; flex-direction: column;">
+                    <!-- Terminal Header -->
+                    <div style="background: #2d2d2d; padding: 10px 15px; display: flex; gap: 8px; align-items: center;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                        <span
+                            style="margin-left: 10px; font-family: monospace; color: #9ca3af; font-size: 12px;">Terminal</span>
+                    </div>
+
+                    <!-- Terminal Content -->
+                    <div id="chromaOutput"
+                        style="padding: 15px; color: #f0f0f0; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; line-height: 1.5; overflow-y: auto; flex: 1; white-space: pre-wrap;">
+                        <span style="color: #6b7280;">Ready... Click "Run" code above.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function runChromaDemo() {
+            const outputDiv = document.getElementById('chromaOutput');
+            outputDiv.innerHTML = ""; // Clear
+
+            const lines = [
+                { text: "PS D:\\Github Repos\\Rag_Chatbot> python chroma_demo.py", delay: 0 },
+                { text: "--- ChromaDB Educational Demo: Embedding & Search ---", delay: 500, color: "#a5f3fc" },
+                { text: "(Note: This runs in-memory and does NOT save to disk)", delay: 700, color: "#9ca3af" },
+                { text: "", delay: 900 },
+                { text: "[1] Initializing Embedding Model (sentence-transformers/all-MiniLM-L6-v2)...", delay: 1200, color: "#fcd34d" },
+                { text: "D:\\Github Repos\\Rag_Chatbot\\chroma_demo.py:18: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated...", delay: 2000, color: "#ef4444" },
+                { text: "  embeddings = SentenceTransformerEmbeddings(model_name=model_name)", delay: 2100, color: "#ef4444" },
+                { text: "", delay: 2300 },
+                { text: "[2] Enter texts to add to the database (type 'DONE' on a new line to finish):", delay: 2500, color: "#c084fc" },
+                { text: "Text 1: hi", delay: 3000 },
+                { text: "Text 2: hello", delay: 3500 },
+                { text: "Text 3: DONE", delay: 4000 },
+                { text: "", delay: 4200 },
+                { text: "[3] Embedding and adding 2 texts to Vector Store...", delay: 4500, color: "#fcd34d" },
+                { text: "    -> Done.", delay: 5500, color: "#86efac" },
+                { text: "", delay: 5700 },
+                { text: "[4] Enter a query to search (or 'quit' to exit): How are you guys?", delay: 6500, color: "#fdf4ff" },
+                { text: "    Searching for: 'How are you guys?'", delay: 7000 },
+                { text: "    -> Found 2 matches:", delay: 8000, color: "#a5f3fc" },
+                { text: "", delay: 8200 },
+                { text: "    * Score: 1.2280", delay: 8400, color: "#86efac" },
+                { text: "    * Content: hello", delay: 8500, bold: true },
+                { text: "    ------------------------------", delay: 8600 },
+                { text: "    * Score: 1.3995", delay: 8800, color: "#86efac" },
+                { text: "    * Content: hi", delay: 8900, bold: true },
+                { text: "    ------------------------------", delay: 9000 },
+                { text: "", delay: 9200 },
+                { text: "[4] Enter a query to search (or 'quit' to exit): quit", delay: 9500 },
+                { text: "(venv) PS D:\\Github Repos\\Rag_Chatbot>", delay: 9700 }
+            ];
+
+            lines.forEach(line => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.style.marginBottom = "4px";
+                    if (line.color) div.style.color = line.color;
+                    if (line.bold) div.style.fontWeight = "bold";
+                    div.innerText = line.text;
+                    outputDiv.appendChild(div);
+                    outputDiv.scrollTop = outputDiv.scrollHeight; // Auto scroll
+                }, line.delay);
+            });
+        }
+    </script>
+
+    <!-- SLIDE 8: FastAPI -->
+    <div class="slide">
+        <div
+            style="width: 80px; height: 80px; background: #eff6ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+            <i class="fa-brands fa-python" style="font-size: 40px; color: var(--primary);"></i>
+        </div>
+        <h2>FastAPI</h2>
+
+        <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+                <h3>What is it?</h3>
+                <p>FastAPI is a tool for building websites and APIs. It creates the "Doors" (Endpoints) that allow
+                    users to send files or messages to our Python code.</p>
+            </div>
+            <div style="flex: 1; min-width: 300px;">
+                <h3>How code uses it?</h3>
+                <p>It defines the <code>/upload</code> door (for PDFs) and the <code>/query</code> door (for
+                    questions). It also handles errors.</p>
+                <div class="code-box" style="border-left-color: var(--primary);"># Code Example
+                    @app.post("/query")
+                    async def query_endpoint(payload: QueryRequest):
+                    ...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 9: Groq API -->
+    <div class="slide">
+        <div
+            style="width: 80px; height: 80px; background: #fff7ed; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+            <i class="fa-solid fa-bolt" style="font-size: 40px; color: var(--accent-orange);"></i>
+        </div>
+        <h2>Groq API</h2>
+
+        <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+                <h3>What is it?</h3>
+                <p>Groq is the <strong>Engine</strong>. It runs the smart AI model (Llama-3). It is famous for being
+                    incredibly fast.</p>
+            </div>
+            <div style="flex: 1; min-width: 300px;">
+                <h3>How code uses it?</h3>
+                <p>We use it in two steps: <br>1. To <strong>Refine</strong> your messy question into a good
+                    one.<br>2. To <strong>Generate</strong> the final answer using the context.</p>
+                <div class="code-box" style="border-left-color: var(--accent-orange);"># Code Example
+                    llm = ChatGroq(model="llama-3.3-70b-versatile")
+                    resp = llm.invoke(prompt)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 10: Limitations -->
+    <div class="slide">
+        <h2>Limitations of RAG</h2>
+        <p>Even though RAG is powerful, it is not perfect.</p>
+
+        <div style="display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 800px; margin-top: 30px;">
+
             <div
-                style="width: 120px; height: 120px; background: #ecfdf5; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; box-shadow: var(--shadow-lg);">
-                <i class="fa-solid fa-hands-clapping" style="font-size: 50px; color: var(--accent-green);"></i>
+                style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
+                <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
+                    <i class="fa-solid fa-trash" style="color: #ef4444;"></i>
+                </div>
+                <div>
+                    <h3>Garbage In, Garbage Out</h3>
+                    <p style="margin: 0; font-size: 16px;">If your uploaded PDF is blurry, confusing, or wrong, the
+                        AI's answer will also be wrong. It cannot fix bad data.</p>
+                </div>
             </div>
-            <h1>Thank You!</h1>
-            <p style="font-size: 26px; color: var(--secondary);">Any Questions?</p>
-            <div style="margin-top: 50px; border-top: 1px solid #cbd5e1; padding-top: 30px; text-align: center;">
-                <p style="font-size: 18px; color: var(--text-muted);">Redjet RAG Architecture v1.1.0</p>
+
+            <div
+                style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
+                <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
+                    <i class="fa-solid fa-hourglass-half" style="color: #ef4444;"></i>
+                </div>
+                <div>
+                    <h3>Latency</h3>
+                    <p style="margin: 0; font-size: 16px;">Because it has to Search Database -> Refine -> Generate,
+                        it is slower than just asking standard ChatGPT.</p>
+                </div>
             </div>
+
+            <div
+                style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
+                <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
+                    <i class="fa-solid fa-layer-group" style="color: #ef4444;"></i>
+                </div>
+                <div>
+                    <h3>Context Limits</h3>
+                    <p style="margin: 0; font-size: 16px;">We can only feed a few chunks (Top 3) to the AI. If the
+                        answer requires reading the entire book at once, RAG might miss it.</p>
+                </div>
+            </div>
+
         </div>
+    </div>
+
+    <!-- SLIDE 11: Thank You -->
+    <div class="slide" style="justify-content: center;">
+        <div
+            style="width: 120px; height: 120px; background: #ecfdf5; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; box-shadow: var(--shadow-lg);">
+            <i class="fa-solid fa-hands-clapping" style="font-size: 50px; color: var(--accent-green);"></i>
+        </div>
+        <h1>Thank You!</h1>
+        <p style="font-size: 26px; color: var(--secondary);">Any Questions?</p>
+        <div style="margin-top: 50px; border-top: 1px solid #cbd5e1; padding-top: 30px; text-align: center;">
+            <p style="font-size: 18px; color: var(--text-muted);">Redjet RAG Architecture v1.1.0</p>
+        </div>
+    </div>
 
     </div>
 
