@@ -931,7 +931,8 @@
 
                 <h4 style="margin-top: 15px; color: var(--accent-green);">How Code uses it?</h4>
                 <p style="font-size: 16px;">We use it to <strong>Store</strong> the chunks from LangChain and
-                    <strong>Retrieve</strong> the most relevant chunks when you ask a question.</p>
+                    <strong>Retrieve</strong> the most relevant chunks when you ask a question.
+                </p>
 
                 <p style="margin-top: 20px; color: var(--text-muted); font-size: 14px;">
                     <i class="fa-solid fa-arrow-right"></i> Click the <strong style="color: #27c93f;"><i
@@ -1056,53 +1057,135 @@
         }
     </script>
 
-    <!-- SLIDE 8: FastAPI -->
+    <!-- SLIDE 8: FastAPI (Simulated IDE - Code Only) -->
     <div class="slide">
         <div
             style="width: 80px; height: 80px; background: #eff6ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
             <i class="fa-brands fa-python" style="font-size: 40px; color: var(--primary);"></i>
         </div>
-        <h2>FastAPI</h2>
+        <h2>FastAPI: The Data Doorway</h2>
 
-        <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
+        <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px; height: 100%;">
+
+            <!-- Left: Theory -->
             <div style="flex: 1; min-width: 300px;">
                 <h3>What is it?</h3>
-                <p>FastAPI is a tool for building websites and APIs. It creates the "Doors" (Endpoints) that allow
-                    users to send files or messages to our Python code.</p>
+                <p>FastAPI is a tool for building websites and APIs. It creates the "Doors" (Endpoints) that allow users
+                    to send files or messages to our Python code.</p>
+
+                <h4 style="margin-top: 15px; color: var(--primary);">How Code uses it?</h4>
+                <p style="font-size: 16px;">It defines the <code>/upload</code> door (for PDFs) and the
+                    <code>/query</code> door (for questions). It also handles errors.
+                </p>
             </div>
-            <div style="flex: 1; min-width: 300px;">
-                <h3>How code uses it?</h3>
-                <p>It defines the <code>/upload</code> door (for PDFs) and the <code>/query</code> door (for
-                    questions). It also handles errors.</p>
-                <div class="code-box" style="border-left-color: var(--primary);"># Code Example
-                    @app.post("/query")
-                    async def query_endpoint(payload: QueryRequest):
-                    ...</div>
+
+            <!-- Right: Simulated IDE (Code Only) -->
+            <div style="flex: 1.2; min-width: 350px; display: flex; flex-direction: column;">
+
+                <!-- Code Window -->
+                <div
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 350px; display: flex; flex-direction: column;">
+                    <!-- Header / Toolbar -->
+                    <div
+                        style="background: #252526; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <i class="fa-brands fa-python" style="color: #4B8BBE;"></i>
+                            <span style="font-family: monospace; color: #ccccc7; font-size: 13px;">main.py
+                                (FastAPI)</span>
+                        </div>
+                    </div>
+                    <!-- Code Content -->
+                    <div
+                        style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
+                        <span style="color: #c586c0;">from</span> fastapi <span style="color: #c586c0;">import</span>
+                        FastAPI, UploadFile<br><br>
+                        app = <span style="color: #4ec9b0;">FastAPI</span>()<br><br>
+                        <span style="color: #6a9955;"># Endpoint 1: File Upload</span><br>
+                        <span style="color: #569cd6;">@app.post</span>(<span
+                            style="color: #ce9178;">"/upload"</span>)<br>
+                        <span style="color: #569cd6;">async def</span> <span
+                            style="color: #dcdcaa;">upload_file</span>(file: UploadFile):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">return</span> {<span
+                            style="color: #ce9178;">"filename"</span>: file.filename, <span
+                            style="color: #ce9178;">"status"</span>: <span
+                            style="color: #ce9178;">"Ingested"</span>}<br><br>
+                        <span style="color: #6a9955;"># Endpoint 2: Query</span><br>
+                        <span style="color: #569cd6;">@app.post</span>(<span
+                            style="color: #ce9178;">"/query"</span>)<br>
+                        <span style="color: #569cd6;">async def</span> <span
+                            style="color: #dcdcaa;">query_endpoint</span>(payload: QueryRequest):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;answer = rag_system.ask(payload.question)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">return</span> {<span
+                            style="color: #ce9178;">"answer"</span>: answer}<br>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- SLIDE 9: Groq API -->
+    <!-- SLIDE 9: Groq API (Simulated IDE - Code Only) -->
     <div class="slide">
         <div
             style="width: 80px; height: 80px; background: #fff7ed; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
             <i class="fa-solid fa-bolt" style="font-size: 40px; color: var(--accent-orange);"></i>
         </div>
-        <h2>Groq API</h2>
+        <h2>Groq API: The Speed Engine</h2>
 
-        <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
+        <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px; height: 100%;">
+
+            <!-- Left: Theory -->
             <div style="flex: 1; min-width: 300px;">
                 <h3>What is it?</h3>
                 <p>Groq is the <strong>Engine</strong>. It runs the smart AI model (Llama-3). It is famous for being
                     incredibly fast.</p>
+
+                <h4 style="margin-top: 15px; color: var(--accent-orange);">How Code uses it?</h4>
+                <p style="font-size: 16px;">We use it to <strong>Generate</strong> the final answer by sending the
+                    user's question + the best chunks from ChromaDB.</p>
             </div>
-            <div style="flex: 1; min-width: 300px;">
-                <h3>How code uses it?</h3>
-                <p>We use it in two steps: <br>1. To <strong>Refine</strong> your messy question into a good
-                    one.<br>2. To <strong>Generate</strong> the final answer using the context.</p>
-                <div class="code-box" style="border-left-color: var(--accent-orange);"># Code Example
-                    llm = ChatGroq(model="llama-3.3-70b-versatile")
-                    resp = llm.invoke(prompt)</div>
+
+            <!-- Right: Simulated IDE (Code Only) -->
+            <div style="flex: 1.2; min-width: 350px; display: flex; flex-direction: column;">
+
+                <!-- Code Window -->
+                <div
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 350px; display: flex; flex-direction: column;">
+                    <!-- Header / Toolbar -->
+                    <div
+                        style="background: #252526; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <i class="fa-brands fa-python" style="color: #4B8BBE;"></i>
+                            <span style="font-family: monospace; color: #ccccc7; font-size: 13px;">groq_demo.py</span>
+                        </div>
+                    </div>
+                    <!-- Code Content -->
+                    <div
+                        style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
+                        <span style="color: #c586c0;">from</span> langchain_groq <span
+                            style="color: #c586c0;">import</span> ChatGroq<br><br>
+                        <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">main</span>():<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(<span
+                            style="color: #ce9178;">"--- Groq API Educational Demo ---"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;api_key = os.getenv(<span
+                            style="color: #ce9178;">"GROQ_API_KEY"</span>)<br><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Initialize Llama-3 Model</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;llm = <span style="color: #4ec9b0;">ChatGroq</span>(<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_key=api_key,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model=<span
+                            style="color: #ce9178;">"llama3-8b-8192"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temperature=0.7<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;)<br><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Interactive Loop</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">while</span> <span
+                            style="color: #569cd6;">True</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_input = <span
+                            style="color: #9cdcfe;">input</span>(<span style="color: #ce9178;">"You: "</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;response = llm.invoke(user_input)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            style="color: #9cdcfe;">print</span>(f<span style="color: #ce9178;">"Groq:
+                            {response.content}"</span>)<br>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
