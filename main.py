@@ -5,6 +5,7 @@ from typing import List, Dict, Any
 from dotenv import load_dotenv
 from loguru import logger
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 # LangChain / Chroma imports
@@ -248,3 +249,7 @@ async def query_endpoint(payload: QueryRequest):
 @app.get("/health")
 def health():
     return {"status": "ok", "collection": CHROMA_COLLECTION}
+
+@app.get("/form", response_class=FileResponse)
+async def serve_form():
+    return FileResponse("form.html")
