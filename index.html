@@ -381,36 +381,72 @@
             <h2 style="font-size: 28px;">Architecture Reference</h2>
             <!-- Cloned Architecture Content -->
             <div class="arch-container" style="padding-bottom: 0;">
+                <!-- START -->
                 <div class="arch-node node-user"><i class="fa-solid fa-user"></i> User</div>
+
                 <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-                <div class="arch-node node-fastapi"><i class="fa-brands fa-python"></i> FastAPI Gateway<br><small
-                        style="color:var(--text-muted)">Upload Data (.pdf/.txt)</small></div>
-                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-                <div class="phase-box">
-                    <div class="phase-label">Phase 1: Ingest Layer</div>
-                    <div class="arch-node node-langchain"><i class="fa-solid fa-scissors"></i> LangChain<br><small
-                            style="color:var(--text-muted)">Split & Process File</small></div>
-                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-                    <div class="arch-node node-chroma"><i class="fa-solid fa-database"></i> Chroma DB<br><small
-                            style="color:var(--text-muted)">Store Vector Data</small></div>
+
+                <!-- Frontend Form -->
+                <div class="arch-node node-fastapi" style="width: 320px; border-left: 5px solid #ec4899;">
+                    <i class="fa-solid fa-file-invoice"></i> Frontend Form<br>
+                    <small style="color:var(--text-muted)">Input: Query + Data (PDF/Txt/Md)</small>
                 </div>
+
                 <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-                <div class="phase-box">
-                    <div class="phase-label">Phase 2: Query Layer</div>
-                    <div class="arch-node node-fastapi"><i class="fa-brands fa-python"></i> FastAPI Gateway<br><small
-                            style="color:var(--text-muted)">Receive Query</small></div>
-                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-                    <div class="arch-node node-groq"><i class="fa-solid fa-wand-magic-sparkles"></i> Groq API<br><small
-                            style="color:var(--text-muted)">Refine Prompt</small></div>
-                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-                    <div class="arch-node node-chroma"><i class="fa-solid fa-magnifying-glass"></i> Chroma DB<br><small
-                            style="color:var(--text-muted)">Retrieve Top Chunks</small></div>
-                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-                    <div class="arch-node node-groq"><i class="fa-solid fa-pen-nib"></i> Groq API<br><small
-                            style="color:var(--text-muted)">Generate Answer</small></div>
+
+                <!-- FastAPI Gateway -->
+                <div class="arch-node node-fastapi" style="width: 320px;">
+                    <i class="fa-brands fa-python"></i> FastAPI Gateway<br>
+                    <small style="color:var(--text-muted)">Route: /upload & /query</small>
                 </div>
-                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-                <div class="arch-node node-final"><i class="fa-solid fa-check-circle"></i> Final Answer</div>
+
+                <div class="arch-arrow"
+                    style="height: 60px; display: flex; justify-content: center; align-items: center;">
+                    <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Main Stem -->
+                        <path d="M40 0 V20" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+                        <!-- Left Branch -->
+                        <path d="M40 20 C40 35, 10 20, 10 40" stroke="#94a3b8" stroke-width="3"
+                            stroke-linecap="round" />
+                        <path d="M5 32 L10 42 L18 34" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <!-- Right Branch -->
+                        <path d="M40 20 C40 35, 70 20, 70 40" stroke="#94a3b8" stroke-width="3"
+                            stroke-linecap="round" />
+                        <path d="M62 34 L70 42 L75 32" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+
+                <div style="display: flex; gap: 40px; width: 100%; justify-content: center;">
+                    <!-- PHASE 1 -->
+                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                        <div class="phase-box" style="border-color: var(--accent-purple);">
+                            <div class="phase-label" style="color: var(--accent-purple);">Phase 1: Ingest</div>
+                            <div class="arch-node node-langchain"><i class="fa-solid fa-scissors"></i>
+                                LangChain<br><small style="color:var(--text-muted)">Chunking</small></div>
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="arch-node node-chroma"><i class="fa-solid fa-database"></i> Chroma DB<br><small
+                                    style="color:var(--text-muted)">Save Vectors</small></div>
+                        </div>
+                    </div>
+                    <!-- PHASE 2 -->
+                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                        <div class="phase-box" style="border-color: var(--accent-orange);">
+                            <div class="phase-label" style="color: var(--accent-orange);">Phase 2: Query</div>
+                            <div class="arch-node node-groq"><i class="fa-solid fa-wand-magic-sparkles"></i> Groq
+                                API<br><small style="color:var(--text-muted)">Refine</small></div>
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="arch-node node-chroma"><i class="fa-solid fa-magnifying-glass"></i> Chroma
+                                DB<br><small style="color:var(--text-muted)">Top Chunks</small></div>
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="arch-node node-groq"><i class="fa-solid fa-robot"></i> Groq API<br><small
+                                    style="color:var(--text-muted)">Answer</small></div>
+                        </div>
+                        <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                        <div class="arch-node node-final"><i class="fa-solid fa-check-circle"></i> Final Answer</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -440,70 +476,96 @@
                 <div class="arch-node node-user">
                     <i class="fa-solid fa-user"></i> User
                 </div>
+
                 <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
 
-                <!-- FASTAPI UPLOAD (Between User & Phase 1) -->
-                <div class="arch-node node-fastapi">
+                <!-- FRONTEND FORM -->
+                <div class="arch-node node-fastapi" style="width: 320px; border-left: 5px solid #ec4899;">
+                    <i class="fa-solid fa-file-invoice"></i> Frontend Form<br>
+                    <small style="color:var(--text-muted)">Input: Query + Data (PDF/Txt/Md)</small>
+                </div>
+
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                <!-- FASTAPI GATEWAY -->
+                <div class="arch-node node-fastapi" style="width: 320px;">
                     <i class="fa-brands fa-python"></i> FastAPI Gateway<br>
-                    <small style="color:var(--text-muted)">Upload Data (.pdf/.txt)</small>
-                </div>
-                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-
-                <!-- PHASE 1 -->
-                <div class="phase-box">
-                    <div class="phase-label">Phase 1: Ingest Layer</div>
-
-                    <div class="arch-node node-langchain">
-                        <i class="fa-solid fa-scissors"></i> LangChain<br>
-                        <small style="color:var(--text-muted)">Split & Process File</small>
-                    </div>
-
-                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-
-                    <div class="arch-node node-chroma">
-                        <i class="fa-solid fa-database"></i> Chroma DB<br>
-                        <small style="color:var(--text-muted)">Store Vector Data</small>
-                    </div>
+                    <small style="color:var(--text-muted)">Route: /upload & /query</small>
                 </div>
 
-                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-
-                <!-- PHASE 2 -->
-                <div class="phase-box">
-                    <div class="phase-label">Phase 2: Query Layer</div>
-
-                    <div class="arch-node node-fastapi">
-                        <i class="fa-brands fa-python"></i> FastAPI Gateway<br>
-                        <small style="color:var(--text-muted)">Receive Query</small>
-                    </div>
-
-                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-
-                    <div class="arch-node node-groq">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> Groq API<br>
-                        <small style="color:var(--text-muted)">Refine Prompt</small>
-                    </div>
-
-                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-
-                    <div class="arch-node node-chroma">
-                        <i class="fa-solid fa-magnifying-glass"></i> Chroma DB<br>
-                        <small style="color:var(--text-muted)">Retrieve Top Chunks</small>
-                    </div>
-
-                    <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-
-                    <div class="arch-node node-groq">
-                        <i class="fa-solid fa-pen-nib"></i> Groq API<br>
-                        <small style="color:var(--text-muted)">Generate Answer</small>
-                    </div>
+                <div class="arch-arrow"
+                    style="height: 60px; display: flex; justify-content: center; align-items: center;">
+                    <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Main Stem -->
+                        <path d="M40 0 V20" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+                        <!-- Left Branch -->
+                        <path d="M40 20 C40 35, 10 20, 10 40" stroke="#94a3b8" stroke-width="3"
+                            stroke-linecap="round" />
+                        <path d="M5 32 L10 42 L18 34" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <!-- Right Branch -->
+                        <path d="M40 20 C40 35, 70 20, 70 40" stroke="#94a3b8" stroke-width="3"
+                            stroke-linecap="round" />
+                        <path d="M62 34 L70 42 L75 32" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
                 </div>
 
-                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                <div style="display: flex; gap: 40px; width: 100%; justify-content: center;">
 
-                <!-- END -->
-                <div class="arch-node node-final">
-                    <i class="fa-solid fa-check-circle"></i> Final Answer
+                    <!-- PHASE 1 BRANCH -->
+                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                        <div class="phase-box" style="border-color: var(--accent-purple);">
+                            <div class="phase-label" style="color: var(--accent-purple);">Phase 1: Ingest (Data)</div>
+
+                            <div class="arch-node node-langchain">
+                                <i class="fa-solid fa-scissors"></i> LangChain<br>
+                                <small style="color:var(--text-muted)">Chunking & Splitting</small>
+                            </div>
+
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                            <div class="arch-node node-chroma">
+                                <i class="fa-solid fa-database"></i> Chroma DB<br>
+                                <small style="color:var(--text-muted)">Save Vectors</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PHASE 2 BRANCH -->
+                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                        <div class="phase-box" style="border-color: var(--accent-orange);">
+                            <div class="phase-label" style="color: var(--accent-orange);">Phase 2: Query (Text)</div>
+
+                            <div class="arch-node node-groq">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Groq API<br>
+                                <small style="color:var(--text-muted)">Enhance/Refine Query</small>
+                            </div>
+
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                            <div class="arch-node node-chroma">
+                                <i class="fa-solid fa-magnifying-glass"></i> Chroma DB<br>
+                                <small style="color:var(--text-muted)">Compare & Extract Top Chunks</small>
+                            </div>
+
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                            <div class="arch-node node-groq">
+                                <i class="fa-solid fa-robot"></i> Groq API<br>
+                                <small style="color:var(--text-muted)">Generate Answer (Enhanced Q + Chunks)</small>
+                            </div>
+                        </div>
+
+                        <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                        <!-- END -->
+                        <div class="arch-node node-final">
+                            <i class="fa-solid fa-check-circle"></i> Final Answer
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
