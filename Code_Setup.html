@@ -1,21 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redjet RAG Chatbot - Quick Start Guide</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f9fafb; color: #333; }
-        h1 { color: #2563eb; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }
-        h2 { color: #1f2937; margin-top: 30px; }
-        code { background-color: #e5e7eb; padding: 2px 5px; border-radius: 4px; font-family: Consolas, monospace; color: #d946ef; }
-        pre { background-color: #1f2937; color: #f3f4f6; padding: 15px; border-radius: 8px; overflow-x: auto; }
-        .step { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .note { border-left: 4px solid #f59e0b; background-color: #fef3c7; padding: 10px 15px; margin: 10px 0; border-radius: 0 4px 4px 0; }
-        a { color: #2563eb; text-decoration: none; font-weight: bold; }
-        a:hover { text-decoration: underline; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9fafb;
+            color: #333;
+        }
+
+        h1 {
+            color: #2563eb;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #1f2937;
+            margin-top: 30px;
+        }
+
+        code {
+            background-color: #e5e7eb;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            color: #d946ef;
+        }
+
+        pre {
+            background-color: #1f2937;
+            color: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .step {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .note {
+            border-left: 4px solid #f59e0b;
+            background-color: #fef3c7;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
+
 <body>
 
     <h1>🚀 Redjet RAG Chatbot Setup Guide</h1>
@@ -23,32 +78,35 @@
 
     <div class="step">
         <h2>1. Project Setup</h2>
-        <p>First, create a folder for your project (e.g., <code>MyChatbot</code>) and verify you have the necessary files.</p>
+        <p>First, create a folder for your project (e.g., <code>MyChatbot</code>) and verify you have the necessary
+            files.</p>
         <ol>
             <li>Create a new folder on your computer.</li>
-            <li>Download/Move the <code>standalone.py</code> file into this folder.</li>
+            <li>Download/Move the <code>main.py</code> file into this folder.</li>
         </ol>
     </div>
 
     <div class="step">
         <h2>2. Create Virtual Environment</h2>
         <p>This isolates your libraries from other projects to prevent conflicts.</p>
-        
+
         <h3>Windows:</h3>
         <pre>python -m venv venv
 venv\Scripts\activate</pre>
-        
+
         <h3>Mac/Linux:</h3>
         <pre>python3 -m venv venv
 source venv/bin/activate</pre>
-        
-        <div class="note"><strong>Tip:</strong> You should see <code>(venv)</code> at the start of your terminal prompt line now.</div>
+
+        <div class="note"><strong>Tip:</strong> You should see <code>(venv)</code> at the start of your terminal prompt
+            line now.</div>
     </div>
 
     <div class="step">
         <h2>3. Install Dependencies</h2>
-        <p>You need to install the required libraries. Create a file named <code>requirements.txt</code> with the following content, or just copy-paste the install command below if you want to skip creating the file.</p>
-        
+        <p>You need to install the required libraries. Create a file named <code>requirements.txt</code> with the
+            following content, or just copy-paste the install command below if you want to skip creating the file.</p>
+
         <strong>Dependencies (requirements.txt):</strong>
         <pre>langchain>=0.2.0
 langchain-community>=0.2.0
@@ -79,10 +137,12 @@ langchain-groq>=0.1.0</pre>
         <p>This chatbot relies on Groq for the AI intelligence.</p>
 
         <h3>1. Get Groq API Key</h3>
-        <p>Go to <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a>, create a free account, and generate a new API Key. <strong>Copy it immediately.</strong></p>
+        <p>Go to <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a>, create a free
+            account, and generate a new API Key. <strong>Copy it immediately.</strong></p>
 
         <h3>2. Create .env File</h3>
-        <p>This file keeps your secrets safe. Create a new file simply named <code>.env</code> (no extension) in your project folder and paste the following content:</p>
+        <p>This file keeps your secrets safe. Create a new file simply named <code>.env</code> (no extension) in your
+            project folder and paste the following content:</p>
         <pre>GROQ_API_KEY=gsk_your_actual_key_here_xxxxxxxxxxxx
 GROQ_MODEL=llama-3.3-70b-versatile
 CHROMA_DIR=./chroma_db
@@ -94,8 +154,8 @@ EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2</pre>
     <div class="step">
         <h2>5. Run the Application</h2>
         <p>Everything is set! Now run the following command in your terminal:</p>
-        <pre>uvicorn standalone:app --reload</pre>
-        
+        <pre>uvicorn main:app --reload</pre>
+
         <p>Wait for the logs to say <code>Application startup complete</code>.</p>
     </div>
 
@@ -103,7 +163,7 @@ EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2</pre>
         <h2>6. How to Use</h2>
         <p>Once running, open your browser and visit:</p>
         <h3><a href="http://127.0.0.1:8000/docs" target="_blank">http://127.0.0.1:8000/docs</a></h3>
-        
+
         <ul>
             <li><strong>To Upload Data:</strong>
                 <ol>
@@ -115,7 +175,8 @@ EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2</pre>
             <li><strong>To Chat:</strong>
                 <ol>
                     <li>Click <code>POST /query</code> -> <strong>Try it out</strong>.</li>
-                    <li>Edit the JSON to ask your question: <code>{ "query": "What is in the file I uploaded?" }</code></li>
+                    <li>Edit the JSON to ask your question: <code>{ "query": "What is in the file I uploaded?" }</code>
+                    </li>
                     <li>Click <strong>Execute</strong> to see the AI's answer!</li>
                 </ol>
             </li>
@@ -123,4 +184,5 @@ EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2</pre>
     </div>
 
 </body>
+
 </html>
