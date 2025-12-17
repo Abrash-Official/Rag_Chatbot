@@ -713,13 +713,17 @@
 
                 <!-- Left: Theory -->
                 <div style="flex: 1; min-width: 300px;">
-                    <h3>What really is LangChain?</h3>
-                    <p>It is the "Glue" framework. But specifically for data, its main function is <strong>Text
-                            Splitting</strong>.</p>
-
-                    <h4 style="margin-top: 15px; color: var(--accent-purple);">Why Split?</h4>
-                    <p style="font-size: 16px;">AI models have a "Context Window" (limited memory). A 100-page PDF is
-                        too big to feed at once. LangChain breaks it into smaller "Chunks" (e.g., 1000 characters).</p>
+                    <h3 style="margin-bottom: 15px;">What is LangChain?</h3>
+                    <p style="font-size: 18px; line-height: 1.6; color: var(--secondary);">
+                        <strong style="color: var(--accent-purple);"></strong>LangChain</strong> is a tool that helps
+                        you build AI applications by <strong style="color: var(--text-main);">connecting an AI model
+                            with your data</strong>, such as PDFs, text files, or databases. Since AI models cannot read
+                        very large files at once because of their <strong style="color: var(--text-main);">limited
+                            context window</strong>, LangChain <strong style="color: var(--accent-purple);">splits big
+                            documents</strong> into <strong style="color: var(--accent-purple);">small pieces
+                            (chunks)</strong> so the AI can read and understand them step by step and answer questions
+                        correctly.
+                    </p>
 
                     <p style="margin-top: 20px; color: var(--text-muted); font-size: 14px;">
                         <i class="fa-solid fa-arrow-right"></i> Click the <strong style="color: #27c93f;"><i
@@ -868,16 +872,20 @@
 
                 <!-- Left: Theory -->
                 <div style="flex: 1; min-width: 300px;">
-                    <h3>What is it?</h3>
-                    <p>It is a <strong>Vector Database</strong>. Unlike normal databases that store words, Chroma stores
-                        "Meanings" (Numbers/Vectors).</p>
-                    <p style="margin-top: 10px;">This allows it to find sentences that <em>mean</em> the same thing,
-                        even if
-                        they use different words (e.g., "Hi" matches "Hello").</p>
-
-                    <h4 style="margin-top: 15px; color: var(--accent-green);">How Code uses it?</h4>
-                    <p style="font-size: 16px;">We use it to <strong>Store</strong> the chunks from LangChain and
-                        <strong>Retrieve</strong> the most relevant chunks when you ask a question.
+                    <h3 style="margin-bottom: 15px;">What is ChromaDB?</h3>
+                    <p style="font-size: 18px; line-height: 1.6; color: var(--secondary); margin-bottom: 20px;">
+                        <strong style="color: var(--accent-green);">ChromaDB</strong> is a <strong
+                            style="color: var(--text-main);">vector database</strong> used to <strong
+                            style="color: var(--text-main);">store and search text by meaning</strong>, not by exact
+                        words, which helps AI systems quickly find the most relevant pieces of information when
+                        answering questions.
+                    </p>
+                    <p style="font-size: 18px; line-height: 1.6; color: var(--secondary);">
+                        <strong style="color: var(--text-main);">In simple terms:</strong><br>
+                        ChromaDB saves your document chunks as <strong style="color: var(--accent-green);">embeddings
+                            (numbers)</strong> and, when you ask a question, it <strong
+                            style="color: var(--accent-green);">finds the most similar chunks</strong> so the AI can use
+                        them to give an accurate answer.
                     </p>
 
                     <p style="margin-top: 20px; color: var(--text-muted); font-size: 14px;">
