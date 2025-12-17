@@ -345,12 +345,12 @@
 
         .modal-content {
             background: var(--bg-body);
-            width: 100%;
-            max-width: 600px;
+            width: 80%;
+            max-width: 1200px;
             max-height: 90vh;
             border-radius: 20px;
             padding: 40px;
-            overflow-y: auto;
+            overflow: auto;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
             position: relative;
             border: 1px solid #cbd5e1;
@@ -1249,12 +1249,13 @@
                 <!-- Left: Theory -->
                 <div style="flex: 1; min-width: 300px;">
                     <h3>What is it?</h3>
-                    <p>FastAPI is a tool for building websites and APIs. It creates the "Doors" (Endpoints) that allow
+                    <p style="font-size: 20px;">FastAPI is a tool for building websites and APIs. It creates the "Doors"
+                        (Endpoints) that allow
                         users
                         to send files or messages to our Python code.</p>
 
                     <h4 style="margin-top: 15px; color: var(--primary);">How Code uses it?</h4>
-                    <p style="font-size: 16px;">It defines the <code>/upload</code> door (for PDFs) and the
+                    <p style="font-size: 20px;">It defines the <code>/upload</code> door (for PDFs) and the
                         <code>/query</code> door (for questions). It also handles errors.
                     </p>
                 </div>
@@ -1322,11 +1323,12 @@
                 <!-- Left: Theory -->
                 <div style="flex: 1; min-width: 300px;">
                     <h3>What is it?</h3>
-                    <p>Groq is the <strong>Engine</strong>. It runs the smart AI model (Llama-3). It is famous for being
+                    <p style="font-size: 20px;">Groq is the <strong>Engine</strong>. It runs the smart AI model
+                        (Llama-3). It is famous for being
                         incredibly fast.</p>
 
                     <h4 style="margin-top: 15px; color: var(--accent-orange);">How Code uses it?</h4>
-                    <p style="font-size: 16px;">We use it to <strong>Generate</strong> the final answer by sending the
+                    <p style="font-size: 20px;">We use it to <strong>Generate</strong> the final answer by sending the
                         user's question + the best chunks from ChromaDB.</p>
                 </div>
 
