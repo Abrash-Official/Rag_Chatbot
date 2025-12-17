@@ -1310,7 +1310,7 @@
         </div>
 
         <!-- SLIDE 9: Groq API (Simulated IDE - Code Only) -->
-        <div class="slide" style="padding-top: 25px; padding-left: 5%; padding-right: 5%;">
+        <div class="slide" style="padding-top: 40px; padding-left: 5%; padding-right: 5%;">
             <div
                 style="width: 80px; height: 80px; background: #fff7ed; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
                 <i class="fa-solid fa-bolt" style="font-size: 40px; color: var(--accent-orange);"></i>
@@ -1335,7 +1335,7 @@
 
                     <!-- Code Window -->
                     <div
-                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 350px; display: flex; flex-direction: column;">
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 505px; display: flex; flex-direction: column;">
                         <!-- Header / Toolbar -->
                         <div
                             style="background: #252526; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;">
@@ -1352,31 +1352,95 @@
                         </div>
                         <!-- Code Content -->
                         <div id="code-groq"
-                            style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
+                            style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 14px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
+                            <span style="color: #c586c0;">import</span> os<br>
+                            <span style="color: #c586c0;">import</span> sys<br>
+                            <span style="color: #c586c0;">from</span> dotenv <span style="color: #c586c0;">import</span>
+                            load_dotenv<br>
                             <span style="color: #c586c0;">from</span> langchain_groq <span
-                                style="color: #c586c0;">import</span> ChatGroq<br><br>
-                            style="color: #c586c0;">import</span> ChatGroq<br><br>
+                                style="color: #c586c0;">import</span> <span style="color: #4ec9b0;">ChatGroq</span><br>
+                            <span style="color: #c586c0;">from</span> langchain_core.prompts <span
+                                style="color: #c586c0;">import</span> <span
+                                style="color: #4ec9b0;">ChatPromptTemplate</span><br><br>
+                            <span style="color: #dcdcaa;">load_dotenv</span>()<br><br>
                             <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">main</span>():<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(<span
-                                style="color: #ce9178;">"--- Groq API Educational Demo ---"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"--- Groq API Educational Demo: LLM Interaction
+                                ---"</span>)<br><br>
                             &nbsp;&nbsp;&nbsp;&nbsp;api_key = os.getenv(<span
-                                style="color: #ce9178;">"GROQ_API_KEY"</span>)<br><br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Initialize Llama-3 Model</span><br>
+                                style="color: #ce9178;">"GROQ_API_KEY"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if not</span> api_key:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"Error: GROQ_API_KEY
+                                not found in .env file."</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">return</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;model_name = os.getenv(<span
+                                style="color: #ce9178;">"GROQ_MODEL"</span>, <span
+                                style="color: #ce9178;">"llama-3.3-70b-versatile"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 1. Initialize ChatGroq</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">"\n[1] Initializing Groq Client (Model:
+                                {model_name})..."</span>)<br>
                             &nbsp;&nbsp;&nbsp;&nbsp;llm = <span style="color: #4ec9b0;">ChatGroq</span>(<br>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_key=api_key,<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model=<span
-                                style="color: #ce9178;">"llama3-8b-8192"</span>,<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temperature=0.7<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model=model_name,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temperature=<span
+                                style="color: #b5cea8;">0.7</span><br>
                             &nbsp;&nbsp;&nbsp;&nbsp;)<br><br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Interactive Loop</span><br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">while</span> <span
-                                style="color: #569cd6;">True</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 2. Interactive Loop</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"\n[2] Start Chatting (type 'quit' to exit)"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># We can use a simple prompt
+                                template</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;system_prompt = <span style="color: #ce9178;">"You are a helpful
+                                assistant explaining concepts clearly."</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">while True</span>:<br>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_input = <span
-                                style="color: #9cdcfe;">input</span>(<span style="color: #ce9178;">"You: "</span>)<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;response = llm.invoke(user_input)<br>
+                                style="color: #dcdcaa;">input</span>(<span style="color: #ce9178;">"\nYou:
+                                "</span>).<span style="color: #dcdcaa;">strip</span>()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span>
+                            user_input.<span style="color: #dcdcaa;">lower</span>() <span
+                                style="color: #c586c0;">in</span> [<span style="color: #ce9178;">'quit'</span>, <span
+                                style="color: #ce9178;">'exit'</span>]:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">break</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if not</span>
+                            user_input:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">continue</span><br><br>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-                                style="color: #9cdcfe;">print</span>(f<span style="color: #ce9178;">"Groq:
-                                {response.content}"</span>)<br>
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"Groq: Generating
+                                response..."</span>, end=<span style="color: #ce9178;">"\r"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">try</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #6a9955;"># invocating the model</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;messages = [<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span
+                                style="color: #ce9178;">"system"</span>, system_prompt),<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span
+                                style="color: #ce9178;">"human"</span>, user_input),<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;response = llm.<span
+                                style="color: #dcdcaa;">invoke</span>(messages)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #6a9955;"># Clear the loading line</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">" "</span> * <span
+                                style="color: #b5cea8;">30</span>, end=<span style="color: #ce9178;">"\r"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"Groq:
+                                {response.content}"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">except</span>
+                            <span style="color: #4ec9b0;">Exception</span> <span style="color: #c586c0;">as</span>
+                            e:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"\nError interacting
+                                with Groq: {e}"</span>)<br><br>
+                            <span style="color: #c586c0;">if</span> __name__ == <span
+                                style="color: #ce9178;">"__main__"</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">main</span>()<br>
                         </div>
                     </div>
                 </div>
@@ -1418,7 +1482,8 @@
                     </div>
                     <div>
                         <h3>Garbage In, Garbage Out</h3>
-                        <p style="margin: 0; font-size: 16px;">If your uploaded PDF is blurry, confusing, or wrong, the
+                        <p style="margin: 0; font-size: 16px;">If your uploaded PDF is blurry, confusing, or wrong,
+                            the
                             AI's answer will also be wrong. It cannot fix bad data.</p>
                     </div>
                 </div>
@@ -1430,7 +1495,8 @@
                     </div>
                     <div>
                         <h3>Latency</h3>
-                        <p style="margin: 0; font-size: 16px;">Because it has to Search Database -> Refine -> Generate,
+                        <p style="margin: 0; font-size: 16px;">Because it has to Search Database -> Refine ->
+                            Generate,
                             it is slower than just asking standard ChatGPT.</p>
                     </div>
                 </div>
@@ -1442,7 +1508,8 @@
                     </div>
                     <div>
                         <h3>Context Limits</h3>
-                        <p style="margin: 0; font-size: 16px;">We can only feed a few chunks (Top 3) to the AI. If the
+                        <p style="margin: 0; font-size: 16px;">We can only feed a few chunks (Top 3) to the AI. If
+                            the
                             answer requires reading the entire book at once, RAG might miss it.</p>
                     </div>
                 </div>
@@ -1500,7 +1567,8 @@
                     <!-- PHASE 1 BRANCH -->
                     <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
                         <div class="phase-box" style="border-color: var(--accent-purple);">
-                            <div class="phase-label" style="color: var(--accent-purple);">Phase 1: Ingest (Data)</div>
+                            <div class="phase-label" style="color: var(--accent-purple);">Phase 1: Ingest (Data)
+                            </div>
 
                             <div class="arch-node node-langchain">
                                 <i class="fa-solid fa-scissors"></i> LangChain<br>
@@ -1519,7 +1587,8 @@
                     <!-- PHASE 2 BRANCH -->
                     <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
                         <div class="phase-box" style="border-color: var(--accent-orange);">
-                            <div class="phase-label" style="color: var(--accent-orange);">Phase 2: Query (Text)</div>
+                            <div class="phase-label" style="color: var(--accent-orange);">Phase 2: Query (Text)
+                            </div>
 
                             <div class="arch-node node-groq">
                                 <i class="fa-solid fa-wand-magic-sparkles"></i> Groq API<br>
