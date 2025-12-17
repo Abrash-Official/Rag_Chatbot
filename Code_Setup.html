@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redjet RAG Chatbot - Quick Start Guide</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -35,12 +37,94 @@
             color: #d946ef;
         }
 
-        pre {
-            background-color: #1f2937;
-            color: #f3f4f6;
-            padding: 15px;
+        /* macOS Window Style */
+        .mac-window {
+            background: #1e1e1e;
             border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+        }
+
+        .mac-header {
+            background: #252526;
+            padding: 8px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red {
+            background: #ff5f56;
+        }
+
+        .dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .dot.green {
+            background: #27c93f;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #4B4B4B;
+            border-radius: 4px;
+            color: #ccccc7;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #333;
+            color: white;
+        }
+
+        .mac-content {
+            padding: 15px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            color: #d4d4d4;
+            line-height: 1.5;
             overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        /* Syntax Highlighting Colors Simulation */
+        .cmd {
+            color: #facc15;
+        }
+
+        /* Yellow for commands */
+        .comment {
+            color: #6a9955;
+        }
+
+        .key {
+            color: #9cdcfe;
+        }
+
+        .str {
+            color: #ce9178;
+        }
+
+        .val {
+            color: #b5cea8;
         }
 
         .step {
@@ -91,12 +175,36 @@
         <p>This isolates your libraries from other projects to prevent conflicts.</p>
 
         <h3>Windows:</h3>
-        <pre>python -m venv venv
-venv\Scripts\activate</pre>
+        <div class="mac-window">
+            <div class="mac-header">
+                <div class="dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <button class="copy-btn" onclick="copyCode('code-venv-win', this)" title="Copy Code">
+                    <i class="fa-regular fa-copy"></i>
+                </button>
+            </div>
+            <div id="code-venv-win" class="mac-content">python -m venv venv
+venv\Scripts\activate</div>
+        </div>
 
         <h3>Mac/Linux:</h3>
-        <pre>python3 -m venv venv
-source venv/bin/activate</pre>
+        <div class="mac-window">
+            <div class="mac-header">
+                <div class="dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <button class="copy-btn" onclick="copyCode('code-venv-mac', this)" title="Copy Code">
+                    <i class="fa-regular fa-copy"></i>
+                </button>
+            </div>
+            <div id="code-venv-mac" class="mac-content">python3 -m venv venv
+source venv/bin/activate</div>
+        </div>
 
         <div class="note"><strong>Tip:</strong> You should see <code>(venv)</code> at the start of your terminal prompt
             line now.</div>
@@ -108,7 +216,18 @@ source venv/bin/activate</pre>
             following content, or just copy-paste the install command below if you want to skip creating the file.</p>
 
         <strong>Dependencies (requirements.txt):</strong>
-        <pre>langchain>=0.2.0
+        <div class="mac-window">
+            <div class="mac-header">
+                <div class="dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <button class="copy-btn" onclick="copyCode('code-reqs', this)" title="Copy Code">
+                    <i class="fa-regular fa-copy"></i>
+                </button>
+            </div>
+            <div id="code-reqs" class="mac-content">langchain>=0.2.0
 langchain-community>=0.2.0
 langchain-chroma>=0.1.0
 chromadb>=0.5.0
@@ -126,10 +245,23 @@ python-multipart>=0.0.9
 python-dotenv>=1.0.0
 pydantic>=2.7.0
 groq>=0.9.0
-langchain-groq>=0.1.0</pre>
+langchain-groq>=0.1.0</div>
+        </div>
 
         <strong>Install Command:</strong>
-        <pre>pip install -r requirements.txt</pre>
+        <div class="mac-window">
+            <div class="mac-header">
+                <div class="dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <button class="copy-btn" onclick="copyCode('code-install', this)" title="Copy Code">
+                    <i class="fa-regular fa-copy"></i>
+                </button>
+            </div>
+            <div id="code-install" class="mac-content">pip install -r requirements.txt</div>
+        </div>
     </div>
 
     <div class="step">
@@ -143,18 +275,47 @@ langchain-groq>=0.1.0</pre>
         <h3>2. Create .env File</h3>
         <p>This file keeps your secrets safe. Create a new file simply named <code>.env</code> (no extension) in your
             project folder and paste the following content:</p>
-        <pre>GROQ_API_KEY=gsk_your_actual_key_here_xxxxxxxxxxxx
-GROQ_MODEL=llama-3.3-70b-versatile
-CHROMA_DIR=./chroma_db
-CHROMA_COLLECTION=redjet_collection
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2</pre>
+
+        <div class="mac-window">
+            <div class="mac-header">
+                <div class="dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <button class="copy-btn" onclick="copyCode('code-env', this)" title="Copy Code">
+                    <i class="fa-regular fa-copy"></i>
+                </button>
+            </div>
+            <div id="code-env" class="mac-content"><span class="key">GROQ_API_KEY</span>=<span
+                    class="str">gsk_your_actual_key_here_xxxxxxxxxxxx</span>
+<span class="key">GROQ_MODEL</span>=<span class="str">llama-3.3-70b-versatile</span>
+<span class="key">CHROMA_DIR</span>=<span class="str">./chroma_db</span>
+<span class="key">CHROMA_COLLECTION</span>=<span class="str">redjet_collection</span>
+<span class="key">EMBEDDING_MODEL</span>=<span class="str">sentence-transformers/all-MiniLM-L6-v2</span>
+            </div>
+        </div>
+
         <p><em>Replace <code>gsk_your_actual_key_here...</code> with the key you copied from Groq.</em></p>
     </div>
 
     <div class="step">
         <h2>5. Run the Application</h2>
         <p>Everything is set! Now run the following command in your terminal:</p>
-        <pre>uvicorn main:app --reload</pre>
+
+        <div class="mac-window">
+            <div class="mac-header">
+                <div class="dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <button class="copy-btn" onclick="copyCode('code-run', this)" title="Copy Code">
+                    <i class="fa-regular fa-copy"></i>
+                </button>
+            </div>
+            <div id="code-run" class="mac-content">uvicorn main:app --reload</div>
+        </div>
 
         <p>Wait for the logs to say <code>Application startup complete</code>.</p>
     </div>
@@ -183,6 +344,25 @@ EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2</pre>
         </ul>
     </div>
 
+    <script>
+        function copyCode(elementId, btnElement) {
+            // Get the text content from the div
+            const codeDiv = document.getElementById(elementId);
+            // We need to replace <br> with newlines if we had any, but here we use white-space: pre-wrap
+            let textToCopy = codeDiv.innerText;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                // Visual feedback
+                const originalIcon = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: #27c93f;"></i>';
+                setTimeout(() => {
+                    btnElement.innerHTML = originalIcon;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+    </script>
 </body>
 
 </html>
