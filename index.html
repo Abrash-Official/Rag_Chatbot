@@ -734,11 +734,25 @@
                         correctly.
                     </p>
 
-                    <p style="margin-top: 20px; color: var(--text-muted); font-size: 14px;">
-                        <i class="fa-solid fa-arrow-right"></i> Click the <strong style="color: #27c93f;"><i
-                                class="fa-solid fa-play"></i> Run</strong> button in the simulated code window to see it
-                        in action.
-                    </p>
+                    <!-- Terminal Window -->
+                    <div class="terminal-window"
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 240px; display: flex; flex-direction: column;">
+                        <!-- Terminal Header -->
+                        <div
+                            style="background: #2d2d2d; padding: 10px 15px; display: flex; gap: 8px; align-items: center;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                            <span
+                                style="margin-left: 10px; font-family: monospace; color: #9ca3af; font-size: 12px;">Terminal</span>
+                        </div>
+
+                        <!-- Terminal Content -->
+                        <div id="simOutput"
+                            style="padding: 15px; color: #f0f0f0; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; line-height: 1.5; overflow-y: auto; flex: 1; white-space: pre-wrap;">
+                            <span style="color: #6b7280;">Ready... Click "Run" code above.</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Right: Simulated IDE -->
@@ -746,7 +760,7 @@
 
                     <!-- Code Window -->
                     <div
-                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 200px; display: flex; flex-direction: column;">
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 506px; display: flex; flex-direction: column;">
                         <!-- Header / Toolbar -->
                         <div
                             style="background: #252526; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;">
@@ -771,50 +785,148 @@
                         <div id="code-langchain"
                             style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
                             <span style="color: #c586c0;">import</span> os<br>
+                            <span style="color: #c586c0;">import</span> sys<br>
+                            <span style="color: #c586c0;">from</span> pathlib <span
+                                style="color: #c586c0;">import</span> <span style="color: #4ec9b0;">Path</span><br>
                             <span style="color: #c586c0;">from</span> langchain_community.document_loaders <span
-                                style="color: #c586c0;">import</span> PyPDFLoader<br>
+                                style="color: #c586c0;">import</span> <span style="color: #4ec9b0;">PyPDFLoader</span>,
+                            <span style="color: #4ec9b0;">TextLoader</span><br>
                             <span style="color: #c586c0;">from</span> langchain_text_splitters <span
-                                style="color: #c586c0;">import</span> RecursiveCharacterTextSplitter<br><br>
+                                style="color: #c586c0;">import</span> <span
+                                style="color: #4ec9b0;">RecursiveCharacterTextSplitter</span><br><br>
+                            <span style="color: #6a9955;"># Ensure you have your environment variables set or load them
+                                here</span><br>
+                            <span style="color: #6a9955;"># from dotenv import load_dotenv</span><br>
+                            <span style="color: #6a9955;"># load_dotenv()</span><br><br>
                             <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">main</span>():<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(<span
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
                                 style="color: #ce9178;">"--- LangChain Educational Demo: Loader & Splitter
-                                ---"</span>)<br>
-                            ---"</span>)<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;file_path = <span style="color: #9cdcfe;">input</span>(<span
+                                ---"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 1. Get input file path from
+                                user</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;file_path_str = <span style="color: #dcdcaa;">input</span>(<span
                                 style="color: #ce9178;">"Enter the absolute path to your file (PDF or TXT):
-                                "</span>)<br><br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Load Document</span><br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;loader = <span
-                                style="color: #4ec9b0;">PyPDFLoader</span>(file_path)<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;docs = loader.load()<br><br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Split Document</span><br>
+                                "</span>).<span style="color: #dcdcaa;">strip</span>()<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Remove quotes if user added
+                                them</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span> file_path_str.<span
+                                style="color: #dcdcaa;">startswith</span>(<span style="color: #ce9178;">'"'</span>)
+                            <span style="color: #c586c0;">and</span> file_path_str.<span
+                                style="color: #dcdcaa;">endswith</span>(<span style="color: #ce9178;">'"'</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file_path_str = file_path_str[<span
+                                style="color: #b5cea8;">1</span>:-<span style="color: #b5cea8;">1</span>]<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;file_path = <span
+                                style="color: #4ec9b0;">Path</span>(file_path_str)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if not</span> file_path.<span
+                                style="color: #dcdcaa;">exists</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"Error: File not
+                                found at {file_path}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">return</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 2. Load the document</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">"\n[1] Loading file: {file_path.name}..."</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;docs = []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">try</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span>
+                            file_path.suffix.<span style="color: #dcdcaa;">lower</span>() == <span
+                                style="color: #ce9178;">".pdf"</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loader = <span
+                                style="color: #4ec9b0;">PyPDFLoader</span>(<span
+                                style="color: #dcdcaa;">str</span>(file_path))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;docs.<span
+                                style="color: #dcdcaa;">extend</span>(loader.<span
+                                style="color: #dcdcaa;">load</span>())<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">elif</span>
+                            file_path.suffix.<span style="color: #dcdcaa;">lower</span>() <span
+                                style="color: #c586c0;">in</span> [<span style="color: #ce9178;">".txt"</span>, <span
+                                style="color: #ce9178;">".md"</span>, <span style="color: #ce9178;">".log"</span>]:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loader = <span
+                                style="color: #4ec9b0;">TextLoader</span>(<span
+                                style="color: #dcdcaa;">str</span>(file_path), encoding=<span
+                                style="color: #ce9178;">"utf-8"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;docs.<span
+                                style="color: #dcdcaa;">extend</span>(loader.<span
+                                style="color: #dcdcaa;">load</span>())<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"Error: Unsupported
+                                file type. Please use .pdf, .txt, .md, or .log"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">return</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">except</span> <span
+                                style="color: #4ec9b0;">Exception</span> <span style="color: #c586c0;">as</span> e:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"Error loading file:
+                                {e}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">return</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">" -> Successfully loaded {len(docs)}
+                                page(s)/document(s)."</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 3. Split the document
+                                (Chunking)</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"\n[2] Splitting text into chunks..."</span>)<br>
                             &nbsp;&nbsp;&nbsp;&nbsp;splitter = <span
-                                style="color: #4ec9b0;">RecursiveCharacterTextSplitter</span>(chunk_size=1000)<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;chunks = splitter.split_documents(docs)<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(f<span
-                                style="color: #ce9178;">"-> Created {len(chunks)} chunks."</span>)<br>
+                                style="color: #4ec9b0;">RecursiveCharacterTextSplitter</span>(<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk_size=<span
+                                style="color: #b5cea8;">1000</span>,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk_overlap=<span
+                                style="color: #b5cea8;">150</span>,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;separators=[<span
+                                style="color: #ce9178;">"\n\n"</span>, <span style="color: #ce9178;">"\n"</span>, <span
+                                style="color: #ce9178;">" "</span>, <span style="color: #ce9178;">""</span>]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;chunks = splitter.<span
+                                style="color: #dcdcaa;">split_documents</span>(docs)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">" -> Created {len(chunks)} chunks."</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 4. Print Chunks</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"\n[3] Printing Chunks (Preview first 3):"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"="</span>*<span style="color: #b5cea8;">60</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">for</span> i, chunk <span
+                                style="color: #c586c0;">in</span> <span
+                                style="color: #dcdcaa;">enumerate</span>(chunks[:<span
+                                style="color: #b5cea8;">3</span>]):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"CHUNK
+                                {i+1}:"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"Metadata:
+                                {chunk.metadata}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"Content Length:
+                                {len(chunk.page_content)}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"-"</span> * <span
+                                style="color: #b5cea8;">20</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(chunk.page_content[:<span
+                                style="color: #b5cea8;">500</span>] + <span style="color: #ce9178;">"..."</span> <span
+                                style="color: #c586c0;">if</span> <span
+                                style="color: #dcdcaa;">len</span>(chunk.page_content) > <span
+                                style="color: #b5cea8;">500</span> <span style="color: #c586c0;">else</span>
+                            chunk.page_content)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"="</span>*<span
+                                style="color: #b5cea8;">60</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span> <span
+                                style="color: #dcdcaa;">len</span>(chunks) > <span style="color: #b5cea8;">3</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"... and
+                                {len(chunks) - 3} more chunks."</span>)<br><br>
+                            <span style="color: #c586c0;">if</span> __name__ == <span
+                                style="color: #ce9178;">"__main__"</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">main</span>()<br>
                         </div>
                     </div>
 
-                    <!-- Terminal Window -->
-                    <div class="terminal-window"
-                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 300px; display: flex; flex-direction: column;">
-                        <!-- Terminal Header -->
-                        <div
-                            style="background: #2d2d2d; padding: 10px 15px; display: flex; gap: 8px; align-items: center;">
-                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
-                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
-                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
-                            <span
-                                style="margin-left: 10px; font-family: monospace; color: #9ca3af; font-size: 12px;">Terminal</span>
-                        </div>
 
-                        <!-- Terminal Content -->
-                        <div id="simOutput"
-                            style="padding: 15px; color: #f0f0f0; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; line-height: 1.5; overflow-y: auto; flex: 1; white-space: pre-wrap;">
-                            <span style="color: #6b7280;">Ready... Click "Run" code above.</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -882,14 +994,14 @@
                 <!-- Left: Theory -->
                 <div style="flex: 1; min-width: 300px;">
                     <h3 style="margin-bottom: 15px;">What is ChromaDB?</h3>
-                    <p style="font-size: 18px; line-height: 1.6; color: var(--secondary); margin-bottom: 20px;">
+                    <p style="font-size: 15px; line-height: 1.6; color: var(--secondary); margin-bottom: 20px;">
                         <strong style="color: var(--accent-green);">ChromaDB</strong> is a <strong
                             style="color: var(--text-main);">vector database</strong> used to <strong
                             style="color: var(--text-main);">store and search text by meaning</strong>, not by exact
                         words, which helps AI systems quickly find the most relevant pieces of information when
                         answering questions.
                     </p>
-                    <p style="font-size: 18px; line-height: 1.6; color: var(--secondary);">
+                    <p style="font-size: 15px; line-height: 1.6; color: var(--secondary);">
                         <strong style="color: var(--text-main);">In simple terms:</strong><br>
                         ChromaDB saves your document chunks as <strong style="color: var(--accent-green);">embeddings
                             (numbers)</strong> and, when you ask a question, it <strong
@@ -897,11 +1009,25 @@
                         them to give an accurate answer.
                     </p>
 
-                    <p style="margin-top: 20px; color: var(--text-muted); font-size: 14px;">
-                        <i class="fa-solid fa-arrow-right"></i> Click the <strong style="color: #27c93f;"><i
-                                class="fa-solid fa-play"></i> Run</strong> button in the simulated code window to see
-                        semantic search in action.
-                    </p>
+                    <!-- Terminal Window -->
+                    <div class="terminal-window"
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 250px; display: flex; flex-direction: column;">
+                        <!-- Terminal Header -->
+                        <div
+                            style="background: #2d2d2d; padding: 10px 15px; display: flex; gap: 8px; align-items: center;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                            <span
+                                style="margin-left: 10px; font-family: monospace; color: #9ca3af; font-size: 12px;">Terminal</span>
+                        </div>
+
+                        <!-- Terminal Content -->
+                        <div id="chromaOutput"
+                            style="padding: 15px; color: #f0f0f0; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; line-height: 1.5; overflow-y: auto; flex: 1; white-space: pre-wrap;">
+                            <span style="color: #6b7280;">Ready... Click "Run" code above.</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Right: Simulated IDE -->
@@ -909,7 +1035,7 @@
 
                     <!-- Code Window -->
                     <div
-                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 200px; display: flex; flex-direction: column;">
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 504px; display: flex; flex-direction: column;">
                         <!-- Header / Toolbar -->
                         <div
                             style="background: #252526; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;">
@@ -933,50 +1059,128 @@
                         <!-- Code Content -->
                         <div id="code-chroma"
                             style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
+                            <span style="color: #c586c0;">import</span> os<br>
+                            <span style="color: #c586c0;">import</span> sys<br>
+                            <span style="color: #c586c0;">from</span> dotenv <span style="color: #c586c0;">import</span>
+                            load_dotenv<br>
                             <span style="color: #c586c0;">from</span> langchain_chroma <span
-                                style="color: #c586c0;">import</span> Chroma<br>
+                                style="color: #c586c0;">import</span> <span style="color: #4ec9b0;">Chroma</span><br>
                             <span style="color: #c586c0;">from</span> langchain_community.embeddings <span
-                                style="color: #c586c0;">import</span> SentenceTransformerEmbeddings<br><br>
+                                style="color: #c586c0;">import</span> <span
+                                style="color: #4ec9b0;">SentenceTransformerEmbeddings</span><br>
+                            <span style="color: #c586c0;">from</span> langchain_core.documents <span
+                                style="color: #c586c0;">import</span> <span
+                                style="color: #4ec9b0;">Document</span><br><br>
+                            <span style="color: #6a9955;"># Load env for proper setup if needed, though local embeddings
+                                might not need API keys</span><br>
+                            <span style="color: #dcdcaa;">load_dotenv</span>()<br><br>
                             <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">main</span>():<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(<span
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
                                 style="color: #ce9178;">"--- ChromaDB Educational Demo: Embedding & Search
                                 ---"</span>)<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Initialize Embedding
-                                Model</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"(Note: This runs in-memory and does NOT save to
+                                disk)"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 1. Setup Embedding Model</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;model_name = <span
+                                style="color: #ce9178;">"sentence-transformers/all-MiniLM-L6-v2"</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">"\n[1] Initializing Embedding Model
+                                ({model_name})..."</span>)<br>
                             &nbsp;&nbsp;&nbsp;&nbsp;embeddings = <span
-                                style="color: #4ec9b0;">SentenceTransformerEmbeddings</span>(model_name=<span
-                                style="color: #ce9178;">"all-MiniLM-L6-v2"</span>)<br><br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Create Vector DB</span><br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;vectorstore = <span
-                                style="color: #4ec9b0;">Chroma</span>(collection_name=<span
-                                style="color: #ce9178;">"demo"</span>, embedding_function=embeddings)<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;vectorstore.add_documents(docs)<br><br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Function: Similarity
-                                Search</span><br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;results = vectorstore.similarity_search_with_score(query, k=2)<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #9cdcfe;">print</span>(results)<br>
+                                style="color: #4ec9b0;">SentenceTransformerEmbeddings</span>(model_name=model_name)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Initialize ephemeral Chroma (no
+                                persist_directory)</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;vectorstore = <span style="color: #4ec9b0;">Chroma</span>(<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collection_name=<span
+                                style="color: #ce9178;">"demo_collection"</span>,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;embedding_function=embeddings,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;">#
+                                persist_directory=None # Passing None typically implies in-memory/ephemeral in newer
+                                versions or default</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 2. Get Data Input</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"\n[2] Enter texts to add to the database (type 'DONE' on a new
+                                line to finish):"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;texts_to_add = []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">while True</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;line = <span
+                                style="color: #dcdcaa;">input</span>(f<span style="color: #ce9178;">"Text
+                                {len(texts_to_add)+1}: "</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span>
+                            line.<span style="color: #dcdcaa;">strip</span>().<span
+                                style="color: #dcdcaa;">upper</span>() == <span
+                                style="color: #ce9178;">'DONE'</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">break</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span>
+                            line.<span style="color: #dcdcaa;">strip</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;texts_to_add.<span
+                                style="color: #dcdcaa;">append</span>(line)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if not</span> texts_to_add:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"No text provided.
+                                Exiting."</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">return</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 3. Embed and Add to
+                                Chroma</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">"\n[3] Embedding and adding {len(texts_to_add)} texts to Vector
+                                Store..."</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Wrap in Document objects as typical
+                                RAG would</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;docs = [<span
+                                style="color: #4ec9b0;">Document</span>(page_content=t, metadata={<span
+                                style="color: #ce9178;">"id"</span>: i}) <span style="color: #c586c0;">for</span> i, t
+                            <span style="color: #c586c0;">in</span> <span
+                                style="color: #dcdcaa;">enumerate</span>(texts_to_add)]<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;vectorstore.<span
+                                style="color: #dcdcaa;">add_documents</span>(docs)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">" -> Done."</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 4. Search</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">while True</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;query = <span
+                                style="color: #dcdcaa;">input</span>(<span style="color: #ce9178;">"\n[4] Enter a query
+                                to search (or 'quit' to exit): "</span>).<span
+                                style="color: #dcdcaa;">strip</span>()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span>
+                            query.<span style="color: #dcdcaa;">lower</span>() <span style="color: #c586c0;">in</span>
+                            [<span style="color: #ce9178;">'quit'</span>, <span
+                                style="color: #ce9178;">'exit'</span>]:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">break</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">" Searching for:
+                                '{query}'"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Perform
+                                similarity search</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;results = vectorstore.<span
+                                style="color: #dcdcaa;">similarity_search_with_score</span>(query, k=<span
+                                style="color: #b5cea8;">2</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">" -> Found
+                                {len(results)} matches:\n"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">for</span>
+                            doc, score <span style="color: #c586c0;">in</span> results:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">" * Score:
+                                {score:.4f}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">" * Content:
+                                {doc.page_content}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">" "</span> + <span
+                                style="color: #ce9178;">"-"</span>*<span style="color: #b5cea8;">30</span>)<br><br>
+                            <span style="color: #c586c0;">if</span> __name__ == <span
+                                style="color: #ce9178;">"__main__"</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">main</span>()<br>
                         </div>
                     </div>
 
-                    <!-- Terminal Window -->
-                    <div class="terminal-window"
-                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 300px; display: flex; flex-direction: column;">
-                        <!-- Terminal Header -->
-                        <div
-                            style="background: #2d2d2d; padding: 10px 15px; display: flex; gap: 8px; align-items: center;">
-                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
-                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
-                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
-                            <span
-                                style="margin-left: 10px; font-family: monospace; color: #9ca3af; font-size: 12px;">Terminal</span>
-                        </div>
 
-                        <!-- Terminal Content -->
-                        <div id="chromaOutput"
-                            style="padding: 15px; color: #f0f0f0; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; line-height: 1.5; overflow-y: auto; flex: 1; white-space: pre-wrap;">
-                            <span style="color: #6b7280;">Ready... Click "Run" code above.</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
