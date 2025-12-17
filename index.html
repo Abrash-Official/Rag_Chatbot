@@ -478,10 +478,7 @@
             </div>
             <h1>RAG Chatbot</h1>
             <p style="font-size: 22px; color: var(--primary);">Retrieval-Augmented Generation System</p>
-            <div
-                style="margin-top: 40px; padding: 10px 20px; background: white; border-radius: 50px; border: 1px solid #e2e8f0; color: var(--text-muted);">
-                <i class="fa-solid fa-code"></i> Based on <code>main.py</code>
-            </div>
+
         </div>
 
 
@@ -489,18 +486,55 @@
         <!-- SLIDE 3: What is RAG? -->
         <div class="slide" style="justify-content: center;">
             <h2>What is a RAG Chatbot?</h2>
-            <p style="font-size: 24px; text-align: center;">
-                <strong>R</strong>etrieval <strong>A</strong>ugmented <strong>G</strong>eneration
-            </p>
+
+            <!-- Visual Flow (Icons) -->
+            <div style="display: flex; align-items: center; gap: 30px; margin-bottom: 30px; opacity: 0.9;">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div
+                        style="width: 70px; height: 70px; background: white; border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); color: var(--primary); font-size: 28px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <span
+                        style="font-size: 14px; font-weight: 600; margin-top: 10px; color: var(--primary);">Retrieval</span>
+                </div>
+
+                <i class="fa-solid fa-arrow-right" style="color: #cbd5e1; font-size: 24px;"></i>
+
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div
+                        style="width: 70px; height: 70px; background: white; border: 2px solid var(--accent-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); color: var(--accent-orange); font-size: 28px;">
+                        <i class="fa-solid fa-file-circle-check"></i>
+                    </div>
+                    <span
+                        style="font-size: 14px; font-weight: 600; margin-top: 10px; color: var(--accent-orange);">Augmentation</span>
+                </div>
+
+                <i class="fa-solid fa-arrow-right" style="color: #cbd5e1; font-size: 24px;"></i>
+
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div
+                        style="width: 70px; height: 70px; background: white; border: 2px solid var(--accent-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); color: var(--accent-green); font-size: 28px;">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <span
+                        style="font-size: 14px; font-weight: 600; margin-top: 10px; color: var(--accent-green);">Generation</span>
+                </div>
+            </div>
+
+            <!-- Definition Card -->
             <div
-                style="background: white; padding: 40px; border-radius: 16px; border: 1px solid #e2e8f0; margin-top: 30px; max-width: 700px; box-shadow: var(--shadow-lg);">
-                <p>
-                    A standard AI (like ChatGPT) relies on its <strong>Training Memory</strong>. <br><br>
-                    A RAG Chatbot relies on <strong>YOUR Data</strong>. It looks up information in a specific database
-                    (like a textbook or company manual) before answering.
+                style="background: white; padding: 40px; border-radius: 20px; border: 1px solid #e2e8f0; max-width: 900px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); position: relative;">
+
+                <p style="font-size: 20px; line-height: 1.7; text-align: center; color: #334155; margin: 0;">
+                    A RAG chatbot (Retrieval-Augmented Generation chatbot) is an AI chatbot that first <strong
+                        style="color: var(--primary);">retrieves relevant information</strong> from external sources
+                    like documents, PDFs, databases, or files and then uses that retrieved information to <strong
+                        style="color: var(--accent-green);">generate an accurate and context-aware response</strong>,
+                    instead of relying only on its built-in knowledge, which helps <strong
+                        style="color: #ef4444;">reduce wrong answers</strong> and allows the chatbot to answer questions
+                    based on <strong style="color: var(--accent-orange);">your own or up-to-date data</strong>.
                 </p>
             </div>
-            <p style="margin-top: 30px;">Think of it like an <strong>Open Book Exam</strong> vs. a Closed Book Exam.</p>
         </div>
 
         <!-- SLIDE 4: Why do we need it? -->
@@ -519,7 +553,7 @@
                 </div>
 
                 <div
-                    class="background: white; padding: 30px; border-radius: 12px; border-left: 5px solid #ef4444; box-shadow: var(--shadow-sm); background: white;">
+                    style="background: white; padding: 30px; border-radius: 12px; border-left: 5px solid #ef4444; box-shadow: var(--shadow-sm); background: white;">
                     <i class="fa-solid fa-check-double"
                         style="font-size: 30px; color: #ef4444; margin-bottom: 15px;"></i>
                     <h3>Accuracy</h3>
