@@ -19,7 +19,8 @@ load_dotenv()
 
 # --- Configuration ---
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+# Default model updated from retired Llama to Qwen 3.6 27B.
+GROQ_MODEL = os.getenv("GROQ_MODEL", "qwen/qwen3.6-27b")
 CHROMA_DIR = os.getenv("CHROMA_DIR", "./chroma_db")
 CHROMA_COLLECTION = os.getenv("CHROMA_COLLECTION", "redjet_collection")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")

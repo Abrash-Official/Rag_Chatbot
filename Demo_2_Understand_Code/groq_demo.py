@@ -14,7 +14,8 @@ def main():
         print("Error: GROQ_API_KEY not found in .env file.")
         return
 
-    model_name = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+    # Default model updated from retired Llama to Qwen 3.6 27B.
+    model_name = os.getenv("GROQ_MODEL", "qwen/qwen3.6-27b")
     
     # 1. Initialize ChatGroq
     print(f"\n[1] Initializing Groq Client (Model: {model_name})...")

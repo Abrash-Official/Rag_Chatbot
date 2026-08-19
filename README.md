@@ -16,7 +16,7 @@ The system follows a modern RAG pipeline:
 3.  **ChromaDB**: Embeds and stores these chunks as vectors for semantic search.
 4.  **Query**: User asks a question.
 5.  **Retrieve**: The system finds the most relevant chunks from the database.
-6.  **Groq API**: The LLM (Llama-3 class) generates a precise answer using the retrieved context.
+6.  **Groq API**: The LLM (Qwen 3.6 27B) generates a precise answer using the retrieved context.
 
 ## 🛠️ Components
 
@@ -34,7 +34,7 @@ Provides a high-performance API with endpoints for uploading documents (`/upload
 
 ### 4. Groq API ⚡
 *The Speed Engine*
-Powers the inference using Llama-3 models, providing near-instant responses.
+Powers the inference using Qwen 3.6 27B models, providing near-instant responses.
 
 ## 🚀 Getting Started
 
@@ -69,7 +69,7 @@ Powers the inference using Llama-3 models, providing near-instant responses.
    ```ini
    GROQ_API_KEY=your_groq_api_key_here
    # Optional overrides:
-   # GROQ_MODEL=llama-3.3-70b-versatile
+   # GROQ_MODEL=qwen/qwen3.6-27b
    # CHROMA_DIR=./chroma_db
    ```
 
